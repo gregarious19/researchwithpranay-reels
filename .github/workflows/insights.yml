@@ -1,0 +1,64 @@
+name: Pull Instagram insights
+
+# Every day at 08:00 IST: snapshot metrics for all posted reels into data/insights.json.
+# Every Monday: refresh the Instagram long-lived token (needs the GH_PAT secret to save it).
+on:
+  schedule:
+    - cron: "30 2 * * *"    # 02:30 UTC = 08:00 IST
+  workflow_dispatch:
+    inputs:
+      refresh:
+        description: "Also refresh the Instagram token now (token must be over 24 h old)"
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+
+concurrency:
+  group: repo-writes
+  cancel-in-progress: false
+
+jobs:
+  insights:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Check token and account
+        env:
+          IG_ACCESS_TOKEN: ${{ secrets.IG_ACCESS_TOKEN }}
+          IG_API_VERSION: ${{ vars.IG_API_VERSION || 'v24.0' }}
+        run: python3 ig.py check
+
+      - name: Fetch metrics
+        env:
+          IG_ACCESS_TOKEN: ${{ secrets.IG_ACCESS_TOKEN }}
+          IG_USER_ID: ${{ secrets.IG_USER_ID }}
+          IG_API_VERSION: ${{ vars.IG_API_VERSION || 'v24.0' }}
+        run: python3 ig.py insights
+
+      - name: Commit
+        run: |
+          git config user.name "reels-bot"
+          git config user.email "reels-bot@users.noreply.github.com"
+          git add data reels
+          git diff --cached --quiet || { git commit -m "Insights $(date -u +%F)"; git pull --rebase -q; git push -q; }
+
+  refresh-token:
+    if: github.event.schedule == '30 2 * * *' || inputs.refresh
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - name: Refresh on Mondays
+        env:
+          IG_ACCESS_TOKEN: ${{ secrets.IG_ACCESS_TOKEN }}
+          IG_API_VERSION: ${{ vars.IG_API_VERSION || 'v24.0' }}
+          GH_TOKEN: ${{ secrets.GH_PAT }}
+        run: |
+          if [ "$(date -u +%u)" != "1" ] && [ "${{ inputs.refresh }}" != "true" ]; then echo "Not Monday"; exit 0; fi
+          if [ -z "$GH_TOKEN" ]; then echo "::warning::GH_PAT secret missing; token not refreshed. Refresh manually within 60 days."; exit 0; fi
+          new=$(python3 ig.py refresh)
+          echo "::add-mask::$new"
+          printf '%s' "$new" | gh secret set IG_ACCESS_TOKEN --repo "${{ github.repository }}"
+          echo "Token refreshed and saved."

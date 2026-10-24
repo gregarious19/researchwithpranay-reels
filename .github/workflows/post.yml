@@ -1,0 +1,86 @@
+name: Post reel to Instagram
+
+# Four times a day (11:00, 15:00, 19:00, 23:00 IST) posts ONE reel: the approved queued reel with the
+# earliest post_after time that has passed. The daily run approves each reel after make.py prints PASS and
+# the contact sheet looks right. Reels left unapproved or on hold never post. If a slot is missed, its reel
+# goes out at the next slot. The slot hours must match SLOTS in make.py.
+# To pause all posting, add a file named PAUSED at the repo root (delete it to resume).
+on:
+  schedule:
+    - cron: "30 5 * * *"    # 05:30 UTC = 11:00 IST
+    - cron: "30 9 * * *"    # 09:30 UTC = 15:00 IST
+    - cron: "30 13 * * *"   # 13:30 UTC = 19:00 IST
+    - cron: "30 17 * * *"   # 17:30 UTC = 23:00 IST
+  workflow_dispatch:
+    inputs:
+      spec:
+        description: "Post this approved spec now (path), ignoring post_after"
+        required: false
+
+permissions:
+  contents: write
+
+concurrency:
+  group: repo-writes
+  cancel-in-progress: false
+
+jobs:
+  post:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Pick the next reel
+        id: pick
+        run: |
+          if [ -f PAUSED ]; then echo "Posting is paused (PAUSED file present)."; exit 0; fi
+          python3 - <<'EOF' >> "$GITHUB_OUTPUT"
+          import glob, json, os, datetime
+          forced = os.environ.get("FORCED", "")
+          now = datetime.datetime.now(datetime.timezone.utc)
+          pick = None
+          if forced:
+              if json.load(open(forced)).get("approved") is not True:
+                  raise SystemExit(f"{forced} is not approved; refusing to post")
+              pick = forced
+          else:
+              due = []
+              for p in glob.glob("reels/queue/*.json"):
+                  s = json.load(open(p))
+                  if s.get("hold") or s.get("approved") is not True:
+                      continue
+                  pa = s.get("post_after")
+                  t = datetime.datetime.fromisoformat(pa) if pa else now
+                  if t > now:
+                      continue
+                  due.append((t, p))
+              if due:
+                  pick = min(due)[1]
+          if pick:
+              s = json.load(open(pick))
+              print(f"spec={pick}")
+              print(f"id={s['id']}")
+          EOF
+        env:
+          FORCED: ${{ github.event.inputs.spec }}
+
+      - name: Publish
+        if: steps.pick.outputs.spec != ''
+        env:
+          IG_ACCESS_TOKEN: ${{ secrets.IG_ACCESS_TOKEN }}
+          IG_USER_ID: ${{ secrets.IG_USER_ID }}
+          IG_API_VERSION: ${{ vars.IG_API_VERSION || 'v24.0' }}
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          id="${{ steps.pick.outputs.id }}"
+          spec="${{ steps.pick.outputs.spec }}"
+          gh release view "reel-$id" >/dev/null || { echo "No rendered video for $id yet (release reel-$id missing)"; exit 1; }
+          url="https://github.com/${{ github.repository }}/releases/download/reel-$id/$id.mp4"
+          python3 ig.py publish "$spec" "$url"
+          mkdir -p reels/posted
+          git mv "$spec" "reels/posted/$(basename "$spec")"
+          git config user.name "reels-bot"
+          git config user.email "reels-bot@users.noreply.github.com"
+          git add -A reels
+          git commit -m "Posted $id"
+          git pull --rebase -q && git push -q

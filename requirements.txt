@@ -1,0 +1,4 @@
+manim>=0.19
+manim-voiceover>=0.3.7
+kokoro-onnx>=0.4
+soundfile

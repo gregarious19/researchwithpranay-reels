@@ -1,0 +1,7 @@
+out/
+models/
+media/
+__pycache__/
+*.pyc
+ids.txt
+todo.txt

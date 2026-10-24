@@ -1,0 +1,112 @@
+name: Render reels
+
+# Renders every new or changed reel in reels/queue (+ its scene in reels/scenes) with Manim and the
+# Kokoro voice, checks its length, and attaches <id>.mp4 and <id>-sheet.png (6 frames) to a GitHub
+# Release named reel-<id>. Instagram fetches the MP4 from there when the reel is posted.
+on:
+  push:
+    paths: ["reels/queue/**.json", "reels/scenes/**.py", "lib/**"]
+  workflow_dispatch:
+    inputs:
+      id:
+        description: "Render just this reel id (blank = every queued reel)"
+        required: false
+
+permissions:
+  contents: write
+
+concurrency:
+  group: render
+  cancel-in-progress: false
+
+env:
+  KOKORO_DIR: models
+  REEL_VOICE: ${{ vars.REEL_VOICE || 'am_michael' }}
+  REEL_HANDLE: ${{ vars.REEL_HANDLE || '' }}
+
+jobs:
+  render:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
+      - name: Find reels to render
+        id: find
+        run: |
+          before="${{ github.event.before }}"
+          if [ -n "${{ inputs.id }}" ]; then
+            echo "${{ inputs.id }}" > ids.txt
+          elif [ "${{ github.event_name }}" = "workflow_dispatch" ] || [ "$before" = "0000000000000000000000000000000000000000" ] \
+               || git diff --name-only "$before" "${{ github.sha }}" | grep -q '^lib/'; then
+            ls reels/queue/*.json 2>/dev/null | xargs -rn1 basename | sed 's/\.json$//' > ids.txt
+          else
+            git diff --name-only --diff-filter=AM "$before" "${{ github.sha }}" -- 'reels/queue/*.json' 'reels/scenes/*.py' \
+              | xargs -rn1 basename | sed -E 's/\.(json|py)$//' | sort -u > ids.txt
+          fi
+          # only ids that are still queued
+          : > todo.txt; while read -r i; do [ -f "reels/queue/$i.json" ] && echo "$i" >> todo.txt; done < ids.txt
+          echo "Reels to render:"; cat todo.txt
+          echo "count=$(wc -l < todo.txt)" >> "$GITHUB_OUTPUT"
+
+      - uses: actions/setup-python@v5
+        if: steps.find.outputs.count != '0'
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Install system packages (LaTeX, Cairo, Pango, ffmpeg)
+        if: steps.find.outputs.count != '0'
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq --no-install-recommends ffmpeg libcairo2-dev libpango1.0-dev pkg-config \
+            texlive-latex-base texlive-latex-extra texlive-fonts-recommended texlive-science cm-super dvisvgm fonts-dejavu-core
+
+      - name: Install Python packages
+        if: steps.find.outputs.count != '0'
+        run: pip install -q -r requirements.txt
+
+      - name: Voice model (cached)
+        if: steps.find.outputs.count != '0'
+        uses: actions/cache@v4
+        with:
+          path: models
+          key: kokoro-v1.0
+
+      - name: Download voice model if missing
+        if: steps.find.outputs.count != '0'
+        run: |
+          mkdir -p models
+          base=https://github.com/thewh1teagle/kokoro-onnx/releases/download/model-files-v1.0
+          [ -f models/kokoro-v1.0.onnx ] || curl -sSfL -o models/kokoro-v1.0.onnx $base/kokoro-v1.0.onnx
+          [ -f models/voices-v1.0.bin ] || curl -sSfL -o models/voices-v1.0.bin $base/voices-v1.0.bin
+
+      - name: Render, check, publish
+        if: steps.find.outputs.count != '0'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PYTHONPATH: ${{ github.workspace }}
+        run: |
+          mkdir -p out
+          failed=""
+          while read -r id; do
+            echo "::group::$id"
+            if ! manim render -r 1080,1920 --fps 30 --disable_caching --media_dir out/media -o "$id" "reels/scenes/$id.py" Reel; then
+              echo "::error::$id failed to render"; failed="$failed $id"; echo "::endgroup::"; continue
+            fi
+            mp4=$(find out/media/videos -name "$id.mp4" | head -1)
+            cp "$mp4" "out/$id.mp4"
+            dur=$(ffprobe -v error -show_entries format=duration -of csv=p=0 "out/$id.mp4")
+            echo "duration: $dur s"
+            python3 -c "import sys; d=float(sys.argv[1]); sys.exit(0 if 20 <= d <= 75 else 1)" "$dur" \
+              || { echo "::error::$id is ${dur}s; reels must be 20-75 s"; failed="$failed $id"; echo "::endgroup::"; continue; }
+            ffmpeg -v error -y -i "out/$id.mp4" -vf "fps=6/$dur,scale=360:-1,tile=6x1:padding=8:color=white" -frames:v 1 "out/$id-sheet.png"
+            gh release delete "reel-$id" --yes --cleanup-tag 2>/dev/null || true
+            gh release create "reel-$id" "out/$id.mp4" "out/$id-sheet.png" --title "Reel: $id" \
+              --notes "$(python3 -c "import json,sys;s=json.load(open(sys.argv[1]));print('Topic: '+s.get('topic','')+'\n\nDuration: '+sys.argv[2]+' s\n\nPosts after: '+s.get('post_after','next slot')+'\n\n'+s.get('caption',''))" "reels/queue/$id.json" "$dur")"
+            echo "Preview: https://github.com/${{ github.repository }}/releases/tag/reel-$id"
+            echo "::endgroup::"
+          done < todo.txt
+          [ -z "$failed" ] || { echo "Failed:$failed"; exit 1; }
