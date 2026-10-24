@@ -46,11 +46,51 @@ BAD = RED_C
 GOOD = GREEN_C
 
 SAFE_TOP, SAFE_BOTTOM, SAFE_X = 6.2, -3.4, 4.0
-CAPTION_Y = -4.7
+CAPTION_Y = -4.6
 
 VOICE = os.environ.get("REEL_VOICE", "am_michael")
-SPEED = float(os.environ.get("REEL_SPEED", "1.05"))
+SPEED = float(os.environ.get("REEL_SPEED", "0.95"))
 HANDLE = os.environ.get("REEL_HANDLE", "")  # e.g. "@yourhandle"; set as a repo variable
+
+# ---------- encoding: Manim's default (CRF 23) smears thin colored lines on dark backgrounds ----------
+import av as _av
+import manim.scene.scene_file_writer as _sfw
+
+X264 = {"crf": os.environ.get("REEL_CRF", "12"), "preset": "slow", "tune": "animation"}
+
+
+class _Container:
+    """Wraps an av output container so every libx264 stream gets X264 quality settings."""
+
+    def __init__(self, c):
+        self._c = c
+
+    def __getattr__(self, name):
+        return getattr(self._c, name)
+
+    def __enter__(self):
+        self._c.__enter__()
+        return self
+
+    def __exit__(self, *exc):
+        return self._c.__exit__(*exc)
+
+    def add_stream(self, codec_name=None, *args, options=None, **kwargs):
+        if codec_name == "libx264":
+            options = {**(options or {}), **X264}
+        return self._c.add_stream(codec_name, *args, options=options, **kwargs)
+
+
+class _AV:
+    def __getattr__(self, name):
+        return getattr(_av, name)
+
+    def open(self, *args, **kwargs):
+        c = _av.open(*args, **kwargs)
+        return _Container(c) if kwargs.get("mode") == "w" or (len(args) > 1 and args[1] == "w") else c
+
+
+_sfw.av = _AV()
 
 # ---------- LaTeX without dvisvgm (some machines lack it): compile to PDF, convert with pdftocairo ----------
 if shutil.which("dvisvgm") is None and shutil.which("pdftocairo"):
@@ -140,9 +180,7 @@ class ReelScene(VoiceoverScene):
 
     # ---- narration ----
     def caption(self, text):
-        cap = txt(text, size=56, width=26).move_to([0, CAPTION_Y, 0])
-        box = BackgroundRectangle(cap, color=BLACK, fill_opacity=0.6, buff=0.2)
-        return VGroup(box, cap)
+        return txt(text, size=52, width=30).move_to([0, CAPTION_Y, 0])
 
     @contextmanager
     def say(self, text):
@@ -169,8 +207,8 @@ class ReelScene(VoiceoverScene):
             self.play(FadeIn(grp, shift=UP * 0.3), run_time=min(0.6, t.duration))
         self.play(FadeOut(grp), run_time=0.4)
 
-    def outro(self, line="Follow for one idea a day."):
-        grp = VGroup(txt(line, size=52).move_to([0, 1.0, 0]))
+    def outro(self, line="Follow for more ideas like this."):
+        grp = VGroup(txt(line, size=68, bold=True, width=18).move_to([0, 1.0, 0]))
         if HANDLE:
             grp.add(txt(HANDLE, size=44, color=ACCENT).next_to(grp[0], DOWN, buff=0.4))
         self.clear_all(run_time=0.4)

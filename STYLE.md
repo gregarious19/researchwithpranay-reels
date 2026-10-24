@@ -1,7 +1,7 @@
 # Style and content guide
 
 Read this before writing a reel. One reel = one idea from math, physics, chemistry, statistics,
-biology or computing, explained visually in 30–60 seconds with a calm narrated voice.
+biology or computing, explained visually in 30–90 seconds (quality over brevity) with a calm narrated voice.
 
 ## The look (Manim, not a whiteboard)
 - Dark background, clean geometry, LaTeX math, smooth transforms. The picture *is* the explanation:

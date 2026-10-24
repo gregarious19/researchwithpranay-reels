@@ -12,9 +12,9 @@ import argparse, ast, datetime, glob, json, os, re, sys
 
 SLOTS = (11, 15, 19, 23)  # IST; must match post.yml and analyze.py
 IST = datetime.timezone(datetime.timedelta(hours=5, minutes=30))
-WORDS_PER_SEC = 2.6        # Kokoro at speed 1.05, measured roughly
+WORDS_PER_SEC = 2.4        # Kokoro at speed 1.05, measured roughly
 GAP_PER_LINE = 0.9         # animation time between/after lines
-MIN_S, MAX_S = 28, 58
+MIN_S, MAX_S = 28, 90
 MAX_WORDS_PER_LINE = 18
 FIELDS = ("id", "topic", "subject", "hook_type", "caption")
 SUBJECTS = ("math", "physics", "chemistry", "computing", "biology", "statistics")
@@ -31,7 +31,7 @@ def narration(src):
             else:
                 lines.append(None)
         if isinstance(node, ast.Call) and isinstance(node.func, ast.Attribute) and node.func.attr == "outro" and not node.args:
-            lines.append("Follow for one idea a day.")
+            lines.append("Follow for more ideas like this.")
     return lines
 
 
