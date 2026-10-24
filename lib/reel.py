@@ -1,22 +1,9 @@
-"""Shared base for every reel: vertical 1080x1920 frame, dark Manim look, on-screen text
-timed for reading, original sound effects, a hook and an outro. No voice.
+"""The look and frame every reel shares: vertical 1080x1920, pure black, Inter words, LaTeX math,
+refined grids and glowing arrows, text timed for reading, sound effects, hook and outro.
 
-A reel's scene file (reels/scenes/<id>.py) looks like:
-
-    from lib.reel import *
-
-    class Reel(ReelScene):
-        def construct(self):
-            self.hook("Why does ice float?")
-            with self.say("Almost every solid sinks in its own liquid.") as t:
-                self.play(Create(thing), run_time=t.duration)
-            ...
-            self.outro()
-
-All words on screen go through LaTeX: use txt("...") for words and MathTex for math.
-Never use manim's Text() (it needs Pango, and the LaTeX look is the house style).
-Everything visual stays inside the SAFE zone (see STYLE.md): x in [-4, 4], y in [-3.4, 6.2].
-Captions live below it; Instagram's buttons cover the bottom and right edges.
+Reels are JSON scripts played by lib/build.py with the components in lib/components.py (see
+SCRIPT_FORMAT.md); this file is the foundation those build on. All words go through LaTeX: use txt()
+for words (math inside $...$) and MathTex for equations, never manim's Text().
 """
 import os, re, shutil, subprocess, tempfile
 from contextlib import contextmanager
@@ -32,6 +19,9 @@ config.pixel_height = 1920
 config.frame_width = 9
 config.frame_height = 16
 config.frame_rate = 30
+
+if os.environ.get("REEL_PREVIEW"):  # quick local check: half size, 15 fps
+    config.pixel_width, config.pixel_height, config.frame_rate = 540, 960, 15
 
 # ---------- look ----------
 BG = "#000000"
@@ -50,7 +40,7 @@ SAFE_TOP, SAFE_BOTTOM, SAFE_X = 6.2, -3.4, 4.0
 CAPTION_Y = -4.6
 
 READ_WPS = 3.0     # comfortable reading speed for on-screen text, words per second
-HANDLE = os.environ.get("REEL_HANDLE", "")  # e.g. "@yourhandle"; set as a repo variable
+HANDLE = os.environ.get("REEL_HANDLE", "@researchwithpranay")
 
 # ---------- encoding: Manim's default (CRF 23) smears thin colored lines on dark backgrounds ----------
 import av as _av

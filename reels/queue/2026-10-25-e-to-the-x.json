@@ -1,0 +1,258 @@
+{
+ "id": "2026-10-25-e-to-the-x",
+ "topic": "why e^x is its own derivative",
+ "subject": "math",
+ "hook_type": "curiosity jump",
+ "caption": "Slide along the graph of eˣ and the slope of the tangent always equals the height. Growth proportional to size: that's what makes e special, and why it runs populations, interest and radioactive decay.\n\nShare this with someone learning calculus.\n\n#calculus #math #mathematics #derivatives #stem #engineering #physics #learnmath",
+ "cover_at": 1.0,
+ "hook": "There's a function whose slope is always exactly its height.",
+ "beats": [
+  {
+   "text": "Here's $e^x$. Pick any point on its graph.",
+   "do": [
+    {
+     "make": "axes",
+     "name": "ax",
+     "x": [
+      -2.5,
+      2.2,
+      1
+     ],
+     "y": [
+      0,
+      8,
+      2
+     ],
+     "size": [
+      7.4,
+      6.4
+     ],
+     "at": [
+      0,
+      0.2
+     ],
+     "labels": [
+      "x",
+      "y"
+     ]
+    },
+    {
+     "make": "graph",
+     "name": "g",
+     "on": "ax",
+     "fn": "exp(x)",
+     "x": [
+      -2.5,
+      2.05
+     ],
+     "color": "blue"
+    },
+    {
+     "make": "tracker",
+     "name": "t",
+     "value": -1.0
+    },
+    {
+     "make": "dot",
+     "name": "p",
+     "follow": "g",
+     "x": "t",
+     "color": "yellow"
+    }
+   ]
+  },
+  {
+   "text": "The tangent line there measures how fast the function is growing at that moment.",
+   "do": [
+    {
+     "make": "tangent",
+     "name": "tan",
+     "graph": "g",
+     "x": "t",
+     "length": 3.2,
+     "color": "yellow"
+    },
+    {
+     "make": "readout",
+     "name": "slope",
+     "tracker": "t",
+     "fn": "exp(x)",
+     "label": "\\text{slope} =",
+     "at": [
+      0,
+      5.5
+     ],
+     "color": "yellow"
+    },
+    {
+     "make": "readout",
+     "name": "height",
+     "tracker": "t",
+     "fn": "exp(x)",
+     "label": "\\text{height} =",
+     "at": [
+      0,
+      4.6
+     ],
+     "color": "blue"
+    }
+   ]
+  },
+  {
+   "text": "Now slide the point along, and keep an eye on both numbers.",
+   "do": [
+    {
+     "sfx": "whoosh"
+    },
+    {
+     "slide": "t",
+     "to": 1.6,
+     "time": 3.0
+    }
+   ]
+  },
+  {
+   "text": "They never disagree. At every point, the slope equals the height.",
+   "do": [
+    {
+     "sfx": "ding"
+    },
+    {
+     "indicate": [
+      "slope",
+      "height"
+     ]
+    },
+    {
+     "slide": "t",
+     "to": 0.3,
+     "time": 1.6
+    }
+   ]
+  },
+  {
+   "do": [
+    {
+     "clear": true
+    }
+   ]
+  },
+  {
+   "text": "In symbols: the derivative of $e^x$ is just $e^x$ again.",
+   "do": [
+    {
+     "make": "tex",
+     "name": "eq",
+     "tex": [
+      "\\frac{d}{dx}",
+      "e^x",
+      "=",
+      "e^x"
+     ],
+     "size": 110,
+     "at": [
+      0,
+      2.4
+     ],
+     "colors": {
+      "1": "blue",
+      "3": "blue"
+     }
+    },
+    {
+     "sfx": "ding"
+    },
+    {
+     "make": "box",
+     "name": "bx",
+     "around": "eq"
+    }
+   ]
+  },
+  {
+   "text": "Call the function $y$, and it says something physical: the rate of growth is proportional to the amount.",
+   "do": [
+    {
+     "hide": "bx",
+     "time": 0.3
+    },
+    {
+     "morph": "eq",
+     "into": {
+      "make": "tex",
+      "tex": [
+       "\\frac{dy}{dx}",
+       "=",
+       "y"
+      ],
+      "size": 120,
+      "colors": {
+       "0": "yellow",
+       "2": "blue"
+      },
+      "at": [
+       0,
+       2.4
+      ]
+     }
+    },
+    {
+     "make": "brace",
+     "name": "b1",
+     "of": "eq",
+     "side": "down",
+     "text": "rate = amount"
+    }
+   ]
+  },
+  {
+   "text": "That one rule runs populations, compound interest and radioactive decay.",
+   "do": [
+    {
+     "make": "text",
+     "name": "l1",
+     "text": "populations",
+     "size": 60,
+     "color": "teal",
+     "at": [
+      0,
+      -0.6
+     ]
+    },
+    {
+     "make": "text",
+     "name": "l2",
+     "text": "compound interest",
+     "size": 60,
+     "color": "yellow",
+     "next_to": "l1",
+     "buff": 0.35
+    },
+    {
+     "make": "text",
+     "name": "l3",
+     "text": "radioactive decay",
+     "size": 60,
+     "color": "brown",
+     "next_to": "l2",
+     "buff": 0.35
+    }
+   ]
+  },
+  {
+   "text": "Whenever change feeds on itself, $e$ is hiding nearby.",
+   "do": [
+    {
+     "flash": "eq"
+    },
+    {
+     "indicate": "eq",
+     "color": "blue"
+    }
+   ]
+  }
+ ],
+ "post_after": "2026-10-25T15:00:00+05:30",
+ "est_duration": 51,
+ "approved": false
+}

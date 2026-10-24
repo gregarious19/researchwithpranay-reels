@@ -1,50 +1,63 @@
-# Style and content guide
+# Style and content guide: @researchwithpranay
 
-Read this before writing a reel. One reel = one idea from math, physics, chemistry, statistics,
-biology or computing, explained visually in 30–90 seconds (quality over brevity) with timed on-screen text and sound effects (no voice).
+Read this before writing a reel. Then read SCRIPT_FORMAT.md for how to build it.
 
-## The look (Manim, not a whiteboard)
-- Dark background, clean geometry, LaTeX math, smooth transforms. The picture *is* the explanation:
-  show the thing changing, don't show text describing it.
-- Colors from `lib/reel.py`: `ACCENT` blue = the main object, `ACCENT2` yellow = the thing to notice,
-  `ACCENT3` teal and `WARM` brown = a second/contrasting object, `BAD`/`GOOD` sparingly, `DIM` for scaffolding.
-- Prefer Manim's motion: `Transform`, `ReplacementTransform`, `TransformMatchingTex`, `ApplyMatrix`,
-  `ValueTracker` + `always_redraw`, `Indicate`, `Circumscribe`. Every line of narration should move something.
-- Equations: `MathTex`, split into parts so pieces can be colored and transformed. Big (≥ 70) — it's a phone.
-- No characters, mascots or logos from anyone else's channel. Original visuals only.
+## What this account is
+Complex ideas from math, physics, chemistry, engineering, computing, statistics and biology,
+**explained through the math**, in the visual style of 3Blue1Brown. One reel = one idea, 30–90 s
+(quality over brevity). No voice: the viewer reads short lines while the picture does the explaining,
+with sound effects for rhythm.
 
-## Frame and safe zone (9 wide × 16 tall, origin at center)
-- Keep everything inside x ∈ [-4, 4], y ∈ [-3.4, 6.2]. Captions sit at y ≈ -4.9 (handled by `say`).
-- Instagram covers the bottom ~15% and a strip on the right with buttons. Nothing important there.
-- `self.title(...)` puts a heading at y ≈ 5.3. Main diagram centered around y ≈ 1.
+Audience: university students, engineers and researchers who know some math and want to *see why*
+something is true. Don't dumb it down; make it clear. Assume high-school calculus and basic linear
+algebra; introduce anything beyond that in a line.
 
-## Structure (~40 s)
-1. `self.hook("...")` — one line, ≤ 10 words, a question or surprise. No "Hey guys", no "In this video".
-2. 5–8 `with self.say("...") as t:` lines, each ≤ 18 words, each paired with an animation timed
-   to `t.duration`. Build ONE picture and keep changing it rather than cutting between many.
-3. The payoff: the moment it clicks, shown visually. Then one line naming the idea formally.
-4. `self.outro()`.
+## Topic ideas (one idea each, never a survey)
+- Math: eigenvectors, determinants as area, complex multiplication as rotation, Fourier series, Taylor
+  series, why e is special, convolution, the central limit theorem, gradient as steepest ascent.
+- Physics: why orbits are ellipses, simple harmonic motion as a rotating vector, wave interference,
+  entropy counting, special relativity's light clock, Schrödinger's equation as rotation in time.
+- Engineering: transfer functions and poles, why bridges resonate, PID control, signal sampling and
+  aliasing, Fourier transforms in filters, stress and strain, the Kalman filter's idea.
+- Computing / ML: gradient descent on a loss surface, attention as weighted averages, why neural nets
+  need nonlinearity, PCA as finding the stretch directions, hashing, the FFT's trick.
+- Chemistry / biology: half-life as e^(-kt), equilibrium as balancing rates, diffusion as random walks,
+  logistic population growth.
+Pick angles where a picture changes your understanding, not just decorates it.
 
-## Narration
-- Write for the ear: short sentences, plain words, "you", "notice", "watch". Name the formal term
-  only after the intuition has landed.
-- Text strings must be plain literals (make.py reads them). Write the way you'd explain it out loud, calmly:
-  recall the definition, show it fail or surprise, then reveal. Short clauses; one idea per line.
-- Sound: pops/whooshes/ding/chime are automatic. Add 1–3 accents with self.sfx("tick"|"thud"|"riser"|"ding") on key moments.
-- Accuracy first. If a simplification is a simplification, say "roughly" or "for nice cases".
+## The look (built into lib/: don't fight it)
+- Pure black background, Inter for words, LaTeX for math, glowing slim arrows, fine grids.
+- Colors carry meaning: `blue` = main object, `yellow` = the thing to notice, `teal`/`brown` = second and
+  third objects, `red` = failure/contradiction, `green` = success. Same object keeps its color throughout.
+- Prefer motion that *is* the explanation: `apply_matrix`, `rotate`, `slide` a tracker, `morph` equations.
+  Every beat should change something on screen.
 
-## Hooks (analyze.py tracks these as `hook_type`)
+## Structure
+1. **Hook** (≤ 14 words): a surprising claim or question. No "Did you know", no "In this video".
+2. **Set up** the object (1–2 beats): show it, name it.
+3. **Recall** the one definition the viewer needs ("Remember, an eigenvector stays on its own span.").
+4. **Tension**: show the naive expectation failing, or a surprising fact.
+5. **Reveal**: the key insight, shown visually, with `riser` → result → `ding` + `box`.
+6. **Generalize** in one line: what this means beyond the example.
+Typical: 7–11 beats.
+
+## Writing the lines (Grant Sanderson's teaching tone, in text)
+- Calm, curious, precise. Invite the viewer to notice: "Watch what happens to…", "Notice that…",
+  "And yet, if you dutifully compute…", "Is that nonsense? Not at all."
+- Intuition before formalism; name the formal term only after the idea has landed.
+- Use exact words (span, linear, proportional) but explain them the first time.
+- Short clauses, one idea per line, ≤ 24 words. Math inline as `$...$`.
+- **Accuracy first.** If something is a simplification, say "roughly" or "in the simplest case".
+  If you are not sure a claim is exactly right, choose a different angle or topic.
+
+## Hooks (`hook_type`, tracked by analyze.py)
 curiosity jump · everyday mystery · myth bust · wrong-answer reveal · visual surprise · exam pain · what it really means
 
-## Metadata: `reels/queue/<id>.json`
-```json
-{"id": "2026-10-25-eigenvectors", "topic": "eigenvectors", "subject": "math",
- "hook_type": "curiosity jump", "caption": "...", "cover_at": 1.0}
-```
-- `id` = `YYYY-MM-DD-slug`; `subject` ∈ math, physics, chemistry, computing, biology, statistics.
-- `caption`: 1–2 plain sentences restating the payoff, a save/share nudge, then 6–10 relevant hashtags.
-- `make.py` adds `post_after`, `est_duration`, `hook`, `approved`.
+## Caption
+1–2 plain sentences restating the payoff, one save/share nudge, then 6–10 relevant hashtags
+(e.g. #math #physics #engineering #linearalgebra #calculus #stem #machinelearning #science).
 
 ## The 70/30 rule
-Each day `analyze.py` plans 4 reels: once a hook has 3+ reels older than 48 h, 3 slots reuse the best
+Each day `analyze.py` plans 4 reels. Once a hook has 3+ reels older than 48 h, 3 slots reuse the best
 hook (new topics) and 1 slot explores another hook. Topics never repeat within the last 28 reels.
+Mix subjects across the day.

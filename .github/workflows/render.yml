@@ -1,11 +1,11 @@
 name: Render reels
 
-# Renders every new or changed reel in reels/queue (+ its scene in reels/scenes) with Manim and its
+# Renders every new or changed reel script in reels/queue with Manim (lib/build.py) and its
 # sound effects, normalizes loudness, checks its length, and attaches <id>.mp4 and <id>-sheet.png (6 frames) to a GitHub
 # Release named reel-<id>. Instagram fetches the MP4 from there when the reel is posted.
 on:
   push:
-    paths: ["reels/queue/**.json", "reels/scenes/**.py", "lib/**"]
+    paths: ["reels/queue/**.json", "lib/**"]
   workflow_dispatch:
     inputs:
       id:
@@ -21,7 +21,7 @@ concurrency:
 
 env:
   SFX_DIR: out/sfx
-  REEL_HANDLE: ${{ vars.REEL_HANDLE || '' }}
+  REEL_HANDLE: ${{ vars.REEL_HANDLE || '@researchwithpranay' }}
 
 jobs:
   render:
@@ -42,7 +42,7 @@ jobs:
                || git diff --name-only "$before" "${{ github.sha }}" | grep -q '^lib/'; then
             ls reels/queue/*.json 2>/dev/null | xargs -rn1 basename | sed 's/\.json$//' > ids.txt
           else
-            git diff --name-only --diff-filter=AM "$before" "${{ github.sha }}" -- 'reels/queue/*.json' 'reels/scenes/*.py' \
+            git diff --name-only --diff-filter=AM "$before" "${{ github.sha }}" -- 'reels/queue/*.json' \
               | xargs -rn1 basename | sed -E 's/\.(json|py)$//' | sort -u > ids.txt
           fi
           # only ids that are still queued
@@ -77,7 +77,7 @@ jobs:
           failed=""
           while read -r id; do
             echo "::group::$id"
-            if ! manim render -r 1080,1920 --fps 30 --disable_caching --media_dir out/media -o "$id" "reels/scenes/$id.py" Reel; then
+            if ! REEL_SPEC="reels/queue/$id.json" manim render -r 1080,1920 --fps 30 --disable_caching --media_dir out/media -o "$id" lib/build.py Reel; then
               echo "::error::$id failed to render"; failed="$failed $id"; echo "::endgroup::"; continue
             fi
             mp4=$(find out/media/videos -name "$id.mp4" | head -1)
