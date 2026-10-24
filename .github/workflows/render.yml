@@ -5,7 +5,7 @@ name: Render reels
 # Release named reel-<id>. Instagram fetches the MP4 from there when the reel is posted.
 on:
   push:
-    paths: ["reels/queue/**.json", "lib/**"]
+    paths: ["reels/queue/**.json", "lib/**", "finish.sh"]
   workflow_dispatch:
     inputs:
       id:
