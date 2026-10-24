@@ -127,11 +127,18 @@ def cmd_insights():
         rec["latest"] = {k: v for k, v in snap.items() if not k.startswith("_")}
         print(spec["id"], rec["latest"])
     # account-level follower count, if available
+    rec = {"fetched": now}
     try:
-        me = call("GET", user_id(), fields="username,followers_count,media_count")
-        db.setdefault("_account", []).append({"fetched": now, **me})
-    except SystemExit:
-        pass
+        tok = call("GET", "me", fields="user_id,username")
+        rec.update(token_user_id=tok.get("user_id"), username=tok.get("username"))
+        rec["ig_user_id_secret_matches"] = (not os.environ.get("IG_USER_ID")) or os.environ["IG_USER_ID"] == tok.get("user_id")
+    except SystemExit as e:
+        rec["token_error"] = str(e)[:300]
+    try:
+        rec.update(call("GET", user_id(), fields="followers_count,media_count"))
+    except SystemExit as e:
+        rec["account_error"] = str(e)[:300]
+    db.setdefault("_account", []).append(rec)
     json.dump(db, open(path, "w"), indent=1, ensure_ascii=False)
 
 def cmd_refresh():
