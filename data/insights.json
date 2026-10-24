@@ -1,1 +1,11 @@
-{}
+{
+ "_account": [
+  {
+   "fetched": "2026-10-24T21:42+00:00",
+   "token_user_id": "17841422826404681",
+   "username": "researchwithpranay",
+   "ig_user_id_secret_matches": false,
+   "account_error": "Instagram API error 400 on researchwithpranay: {\"error\":{\"message\":\"Unsupported get request. Object with ID 'researchwithpranay' does not exist, cannot be loaded due to missing permissions, or does not support this operation\",\"type\":\"IGApiException\",\"code\":100,\"error_subcode\":33,\"fbtrace_id\":\"AsnPHY"
+  }
+ ]
+}
