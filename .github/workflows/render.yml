@@ -61,7 +61,7 @@ jobs:
         run: |
           sudo apt-get update -qq
           sudo apt-get install -y -qq --no-install-recommends ffmpeg libcairo2-dev libpango1.0-dev pkg-config \
-            texlive-latex-base texlive-latex-extra texlive-fonts-recommended texlive-science cm-super dvisvgm fonts-dejavu-core
+            texlive-latex-base texlive-latex-extra texlive-fonts-recommended texlive-science cm-super dvisvgm texlive-xetex fonts-inter poppler-utils
 
       - name: Install Python packages
         if: steps.find.outputs.count != '0'

@@ -34,16 +34,17 @@ config.frame_height = 16
 config.frame_rate = 30
 
 # ---------- look ----------
-BG = "#0E1117"
+BG = "#000000"
 config.background_color = BG
-INK = "#ECECEC"          # main text
-DIM = "#8B93A1"          # secondary text
-ACCENT = BLUE_C          # main idea
-ACCENT2 = YELLOW_C       # the thing to notice
-ACCENT3 = TEAL_C
-WARM = "#C08A5B"         # brown accent
-BAD = RED_C
-GOOD = GREEN_C
+INK = "#F2F2F2"          # main text
+DIM = "#7C8494"          # secondary text, scaffolding
+ACCENT = "#58C4DD"       # main idea (blue)
+ACCENT2 = "#FFD45E"      # the thing to notice (warm yellow)
+ACCENT3 = "#5FD3B5"      # second object (teal)
+WARM = "#D49A66"         # contrasting object (brown)
+BAD = "#FF6B6B"
+GOOD = "#7BE495"
+GRID_COLOR = "#2E6F8E"
 
 SAFE_TOP, SAFE_BOTTOM, SAFE_X = 6.2, -3.4, 4.0
 CAPTION_Y = -4.6
@@ -107,40 +108,86 @@ if shutil.which("dvisvgm") is None and shutil.which("pdftocairo"):
     config.tex_template.output_format = ".pdf"
 
 
-# ---------- words ----------
-_ESC = {"\\": r"\textbackslash{}", "&": r"\&", "%": r"\%", "$": r"\$", "#": r"\#", "_": r"\_",
+# ---------- words: Inter via XeLaTeX (math inside $...$ stays Computer Modern) ----------
+WORDS = TexTemplate(tex_compiler="xelatex",
+                    output_format=".pdf" if shutil.which("dvisvgm") is None else ".xdv")
+WORDS.add_to_preamble(r"\usepackage{fontspec}\setsansfont{Inter}[UprightFont=*-Medium,BoldFont=*-Bold]"
+                      r"\renewcommand{\familydefault}{\sfdefault}")
+
+_ESC = {"\\": r"\textbackslash{}", "&": r"\&", "%": r"\%", "#": r"\#", "_": r"\_",
         "{": r"\{", "}": r"\}", "~": r"\textasciitilde{}", "^": r"\textasciicircum{}",
         "×": r"$\times$", "°": r"$^\circ$", "→": r"$\to$", "≈": r"$\approx$", "λ": r"$\lambda$"}
+_MATH = re.compile(r"(\$[^$]+\$)")
+NBSP = " "
 
 
 def _esc(s):
-    return "".join(_ESC.get(c, c) for c in s)
+    """Escape LaTeX specials outside $...$; math segments pass through untouched."""
+    return "".join(part if _MATH.fullmatch(part) else "".join(_ESC.get(c, c) for c in part)
+                   for part in _MATH.split(s))
+
+
+def plain(text):
+    """Roughly how a line reads on screen (math collapsed), for wrapping and reading time."""
+    return _MATH.sub(lambda m: re.sub(r"\\[a-zA-Z]+|[{}^_$\\]", "x", m.group(1)).replace(" ", ""), text)
 
 
 def wrap(text, width=26):
-    words, lines, cur = text.split(), [], ""
-    for w in words:
-        if cur and len(cur) + 1 + len(w) > width:
+    """Wrap on spaces, never inside $...$."""
+    protected = _MATH.sub(lambda m: m.group(1).replace(" ", NBSP), text)
+    lines, cur = [], ""
+    for w in [w for w in protected.split(" ") if w]:  # split(" "), not split(): NBSP must survive
+        if cur and len(plain(cur.replace(NBSP, " "))) + 1 + len(plain(w.replace(NBSP, " "))) > width:
             lines.append(cur)
             cur = w
         else:
             cur = f"{cur} {w}".strip()
     if cur:
         lines.append(cur)
-    return lines
+    return [l.replace(NBSP, " ") for l in lines]
 
 
 def txt(text, size=48, color=INK, bold=False, width=None):
-    """Words on screen, set in LaTeX sans-serif. `width` = max characters per line (wraps)."""
+    """Words on screen in Inter; put math in $...$. `width` = max characters per line (wraps)."""
     lines = wrap(text, width) if width else text.split("\n")
     body = r" \\ ".join(_esc(l) for l in lines)
     body = r"\textbf{" + body + "}" if bold else body
-    return Tex(r"\textsf{" + body + "}", font_size=size, color=color)
+    return Tex(body, font_size=size, color=color, tex_template=WORDS)
+
+
+# ---------- refined building blocks ----------
+def grid(size=7.2, center=(0, 0.4, 0), x_range=(-3, 3, 1), y_range=None, plane=NumberPlane):
+    """Fine main grid lines, a faint half-step subgrid, crisp axes."""
+    y_range = y_range or x_range
+    g = plane(x_range=list(x_range), y_range=list(y_range), x_length=size, y_length=size,
+              background_line_style={"stroke_color": GRID_COLOR, "stroke_width": 2, "stroke_opacity": 0.75},
+              faded_line_style={"stroke_color": GRID_COLOR, "stroke_width": 1, "stroke_opacity": 0.3},
+              faded_line_ratio=2, axis_config={"stroke_width": 3, "stroke_color": INK, "stroke_opacity": 0.9})
+    return g.move_to(center)
+
+
+def vec(start, end, color=ACCENT, width=9):
+    """Arrow with a slim body, sharp tip and a soft glow behind it."""
+    a = Arrow(start, end, buff=0, color=color, stroke_width=width, tip_length=0.3,
+              max_tip_length_to_length_ratio=0.3, max_stroke_width_to_length_ratio=20)
+    a.set_stroke(color, width=width * 2.6, opacity=0.22, background=True, family=False)  # glow on the body only
+    return a
+
+
+def span_line(p1, p2, color, opacity=0.65):
+    return DashedLine(p1, p2, color=color, stroke_width=2.5, stroke_opacity=opacity, dash_length=0.14,
+                      dashed_ratio=0.55)
+
+
+def glow(mob, color=None, width=18, opacity=0.2):
+    """Soft halo behind any stroked shape (arcs, curves)."""
+    mob.set_stroke(color or mob.get_color(), width=width, opacity=opacity, background=True)
+    return mob
 
 
 def read_time(text):
     """Seconds a line stays up: enough to read it comfortably."""
-    return max(2.2, len(text.split()) / READ_WPS + 0.9)
+    return max(2.2, len(plain(text).split()) / READ_WPS + 0.9)
 
 
 class ReelScene(Scene):
@@ -163,7 +210,7 @@ class ReelScene(Scene):
 
     # ---- narration (on-screen text) ----
     def caption(self, text):
-        return txt(text, size=58, width=26).move_to([0, CAPTION_Y, 0])
+        return txt(text, size=50, width=26).move_to([-0.15, CAPTION_Y, 0])
 
     @contextmanager
     def say(self, text):
