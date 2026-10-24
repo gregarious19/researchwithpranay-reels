@@ -409,5 +409,11 @@
  "post_after": "2026-10-25T11:00:00+05:30",
  "est_duration": 54,
  "approved": true,
- "visual": "geometry"
+ "visual": "geometry",
+ "posted": {
+  "media_id": "18119489708063210",
+  "permalink": "https://www.instagram.com/reel/De5K2efDlsL/",
+  "timestamp": "2026-10-24T22:08:52+0000",
+  "video_url": "https://github.com/gregarious19/researchwithpranay-reels/releases/download/reel-2026-10-25-rotation-eigenvalues/2026-10-25-rotation-eigenvalues.mp4"
+ }
 }
