@@ -1,0 +1,12 @@
+{
+ "id": "2026-10-25-rotation-eigenvalues",
+ "topic": "complex eigenvalues of a rotation",
+ "subject": "math",
+ "hook_type": "myth bust",
+ "caption": "A 90° rotation knocks every real arrow off its line, so it has no real eigenvectors. Solve anyway and you get λ = ±i, and multiplying by i is a quarter turn. Imaginary eigenvalues mean rotation.\n\nShare this with someone stuck on linear algebra.\n\n#linearalgebra #eigenvalues #complexnumbers #math #mathematics #stem #engineering #physics #machinelearning",
+ "cover_at": 1.0,
+ "post_after": "2026-10-25T11:00:00+05:30",
+ "est_duration": 50,
+ "hook": "This matrix has no eigenvectors. Or does it?",
+ "approved": false
+}
