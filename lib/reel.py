@@ -13,10 +13,12 @@ A reel's scene file (reels/scenes/<id>.py) looks like:
             ...
             self.outro()
 
+All words on screen go through LaTeX: use txt("...") for words and MathTex for math.
+Never use manim's Text() (it needs Pango, and the LaTeX look is the house style).
 Everything visual stays inside the SAFE zone (see STYLE.md): x in [-4, 4], y in [-3.4, 6.2].
 Captions live below it; Instagram's buttons cover the bottom and right edges.
 """
-import os, re, subprocess, tempfile
+import os, re, shutil, subprocess, tempfile
 from contextlib import contextmanager
 from pathlib import Path
 
@@ -42,14 +44,67 @@ ACCENT3 = TEAL_C
 WARM = "#C08A5B"         # brown accent
 BAD = RED_C
 GOOD = GREEN_C
-FONT = "DejaVu Sans"
 
 SAFE_TOP, SAFE_BOTTOM, SAFE_X = 6.2, -3.4, 4.0
-CAPTION_Y = -4.9
+CAPTION_Y = -4.7
 
 VOICE = os.environ.get("REEL_VOICE", "am_michael")
 SPEED = float(os.environ.get("REEL_SPEED", "1.05"))
 HANDLE = os.environ.get("REEL_HANDLE", "")  # e.g. "@yourhandle"; set as a repo variable
+
+# ---------- LaTeX without dvisvgm (some machines lack it): compile to PDF, convert with pdftocairo ----------
+if shutil.which("dvisvgm") is None and shutil.which("pdftocairo"):
+    import manim.utils.tex_file_writing as _tfw
+
+    def _pdf_to_svg(dvi_file, extension, page=1):
+        out = Path(dvi_file).with_suffix(".svg")
+        if not out.exists():
+            subprocess.run(["pdftocairo", "-svg", "-f", str(page), "-l", str(page), str(dvi_file), str(out)],
+                           check=True, capture_output=True)
+        return out
+
+    _tfw.convert_to_svg = _pdf_to_svg
+    config.tex_template.tex_compiler = "pdflatex"
+    config.tex_template.output_format = ".pdf"
+
+
+# ---------- words ----------
+_ESC = {"\\": r"\textbackslash{}", "&": r"\&", "%": r"\%", "$": r"\$", "#": r"\#", "_": r"\_",
+        "{": r"\{", "}": r"\}", "~": r"\textasciitilde{}", "^": r"\textasciicircum{}",
+        "×": r"$\times$", "°": r"$^\circ$", "→": r"$\to$", "≈": r"$\approx$", "λ": r"$\lambda$"}
+
+
+def _esc(s):
+    return "".join(_ESC.get(c, c) for c in s)
+
+
+def wrap(text, width=26):
+    words, lines, cur = text.split(), [], ""
+    for w in words:
+        if cur and len(cur) + 1 + len(w) > width:
+            lines.append(cur)
+            cur = w
+        else:
+            cur = f"{cur} {w}".strip()
+    if cur:
+        lines.append(cur)
+    return lines
+
+
+def txt(text, size=48, color=INK, bold=False, width=None):
+    """Words on screen, set in LaTeX sans-serif. `width` = max characters per line (wraps)."""
+    lines = wrap(text, width) if width else text.split("\n")
+    body = r" \\ ".join(_esc(l) for l in lines)
+    body = r"\textbf{" + body + "}" if bold else body
+    return Tex(r"\textsf{" + body + "}", font_size=size, color=color)
+
+
+def spoken(text):
+    """Caption text -> what the voice should say (tidy symbols the TTS would mangle)."""
+    t = text.replace("×", " times ").replace("≈", " about ").replace("→", " to ").replace("=", " equals ")
+    t = t.replace("λ", " lambda ").replace("°", " degrees")
+    t = re.sub(r"\be\^", "e to the ", t)
+    return re.sub(r"\s+", " ", t).strip()
 
 
 class KokoroService(SpeechService):
@@ -69,33 +124,13 @@ class KokoroService(SpeechService):
         cached = self.get_cached_result(input_data, cache_dir)
         if cached is not None:
             return cached
-        audio_path = path or self.get_audio_basename(input_data) + ".mp3"
+        audio_path = str(path) if path else self.get_audio_basename(input_data) + ".mp3"
         samples, sr = self.kokoro.create(spoken(text), voice=self.voice, speed=self.speed, lang="en-us")
         with tempfile.NamedTemporaryFile(suffix=".wav", delete=False) as f:
             sf.write(f.name, samples, sr)
             subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-i", f.name, "-b:a", "192k",
                             str(Path(cache_dir) / audio_path)], check=True)
         return {"input_text": text, "input_data": input_data, "original_audio": audio_path}
-
-
-def spoken(text):
-    """Caption text -> what the voice should say (tidy symbols the TTS would mangle)."""
-    t = text.replace("×", " times ").replace("≈", " about ").replace("→", " to ").replace("=", " equals ")
-    t = re.sub(r"\be\^", "e to the ", t)
-    return re.sub(r"\s+", " ", t).strip()
-
-
-def wrap(text, width=26):
-    words, lines, cur = text.split(), [], ""
-    for w in words:
-        if cur and len(cur) + 1 + len(w) > width:
-            lines.append(cur)
-            cur = w
-        else:
-            cur = f"{cur} {w}".strip()
-    if cur:
-        lines.append(cur)
-    return "\n".join(lines)
 
 
 class ReelScene(VoiceoverScene):
@@ -105,9 +140,8 @@ class ReelScene(VoiceoverScene):
 
     # ---- narration ----
     def caption(self, text):
-        cap = Text(wrap(text), font=FONT, font_size=40, color=INK, line_spacing=0.9)
-        cap.move_to([0, CAPTION_Y, 0])
-        box = BackgroundRectangle(cap, color=BLACK, fill_opacity=0.55, buff=0.18, corner_radius=0.12)
+        cap = txt(text, size=56, width=26).move_to([0, CAPTION_Y, 0])
+        box = BackgroundRectangle(cap, color=BLACK, fill_opacity=0.6, buff=0.2)
         return VGroup(box, cap)
 
     @contextmanager
@@ -123,25 +157,23 @@ class ReelScene(VoiceoverScene):
     # ---- standard pieces ----
     def title(self, text, size=60, color=INK):
         """Big heading at the top of the safe zone."""
-        return Text(text, font=FONT, font_size=size, color=color, weight=BOLD).move_to([0, 5.3, 0])
+        return txt(text, size=size, color=color, bold=True).move_to([0, 5.3, 0])
 
     def hook(self, line, sub=None):
         """First ~2 s: the question that stops the scroll. Spoken and shown big."""
-        big = Text(wrap(line, 18), font=FONT, font_size=72, color=INK, weight=BOLD, line_spacing=0.9)
-        big.move_to([0, 1.5, 0])
+        big = txt(line, size=76, bold=True, width=18).move_to([0, 1.5, 0])
         grp = VGroup(big)
         if sub:
-            grp.add(Text(sub, font=FONT, font_size=40, color=ACCENT2).next_to(big, DOWN, buff=0.5))
+            grp.add(txt(sub, size=48, color=ACCENT2).next_to(big, DOWN, buff=0.5))
         with self.voiceover(text=line) as t:
             self.play(FadeIn(grp, shift=UP * 0.3), run_time=min(0.6, t.duration))
         self.play(FadeOut(grp), run_time=0.4)
 
     def outro(self, line="Follow for one idea a day."):
-        txt = Text(line, font=FONT, font_size=46, color=INK).move_to([0, 1.0, 0])
-        grp = VGroup(txt)
+        grp = VGroup(txt(line, size=52).move_to([0, 1.0, 0]))
         if HANDLE:
-            grp.add(Text(HANDLE, font=FONT, font_size=40, color=ACCENT).next_to(txt, DOWN, buff=0.4))
-        self.play(*[FadeOut(m) for m in self.mobjects], run_time=0.4)
+            grp.add(txt(HANDLE, size=44, color=ACCENT).next_to(grp[0], DOWN, buff=0.4))
+        self.clear_all(run_time=0.4)
         with self.voiceover(text=line):
             self.play(FadeIn(grp, shift=UP * 0.2), run_time=0.6)
         self.wait(0.6)

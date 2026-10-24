@@ -58,8 +58,8 @@ class Reel(ReelScene):
         eq[1].set_color(ACCENT3)
         eq[4].set_color(ACCENT3)
         eq[3].set_color(ACCENT2)
-        vec_lbl = Text("eigenvector", font=FONT, font_size=40, color=ACCENT3).next_to(eq[1], DOWN, buff=0.6)
-        val_lbl = Text("eigenvalue", font=FONT, font_size=40, color=ACCENT2).next_to(eq[3], UP, buff=0.6)
+        vec_lbl = txt("eigenvector", size=44, color=ACCENT3).next_to(eq[1], DOWN, buff=0.6)
+        val_lbl = txt("eigenvalue", size=44, color=ACCENT2).next_to(eq[3], UP, buff=0.6)
         with self.say("Arrows that only stretch are eigenvectors. The stretch factor is the eigenvalue.") as t:
             self.play(Write(eq), run_time=t.duration * 0.35)
             self.play(FadeIn(vec_lbl, shift=UP * 0.2), run_time=t.duration * 0.2)
