@@ -8,7 +8,10 @@ Each reel is a JSON script; the library renders it. Never write Manim code for a
    Read `FEEDBACK.md` (Pranay's notes; they override everything), `TOPICS.md` (requested topics go first),
    `STYLE.md` and `SCRIPT_FORMAT.md` in full, and two scripts in `reels/posted/` (or `reels/queue/`).
 
-2. **For each slot, in order 11 → 15 → 19 → 23** (have the 11:00 reel approved by ~10:30 IST):
+   `python3 approve.py list`: a slot that already holds a queued reel for today (approved or not) is taken;
+   make reels only for the free slots, and leave existing queued reels alone (Pranay may have put them there).
+
+2. **For each free slot, in order 11 → 15 → 19 → 23** (have the 11:00 reel approved by ~10:30 IST):
    1. Pick a topic per the plan: not in the last 28 reels; mix subjects across the day.
    2. Work out the explanation and check every claim. If unsure of a fact, change the angle or topic.
    3. Write `reels/queue/<id>.json` (id = `YYYY-MM-DD-slug`, today's date).
@@ -17,9 +20,14 @@ Each reel is a JSON script; the library renders it. Never write Manim code for a
       no text overlapping text or the picture, equations rendered (not raw code), each beat shows
       something new, the reveal is visible. If anything is off, fix the script and preview again.
    6. `git add reels/queue/<id>.json && git commit -m "Reel <id>" && git push`. This starts render.yml.
-   7. Wait for it: `gh run list --workflow render.yml --limit 3`, then `gh run watch <run-id> --exit-status`.
-      If it fails: `gh run view <run-id> --log-failed`, fix, push again. After 3 failures drop the reel
-      (`python3 approve.py drop <id>`, commit, push), say so, and carry on.
+   7. Wait for it: `gh run list --workflow render.yml --limit 3`, then `gh run watch <run-id> --exit-status`
+      (run it in the background; a render takes ~5–10 min, so script the next reel meanwhile).
+      Use `gh api` (REST) for anything else; `gh release …`/`gh workflow run` don't work from sessions.
+      Confirm the release has both files:
+      `gh api repos/<owner>/<repo>/releases/tags/reel-<id> --jq '[.assets[].name]'`.
+      If it fails: `gh api repos/<owner>/<repo>/actions/runs/<run-id>/jobs --jq '.jobs[].steps[] | "\(.name)=\(.conclusion)"'`
+      shows the failing step; reproduce it locally with `make.py <id> --preview`, fix, push again.
+      After 3 failures drop the reel (`python3 approve.py drop <id>`, commit, push), say so, and carry on.
    8. `python3 approve.py approve <id>`, then
       `git add -A && git commit -m "Approve <id> [skip ci]" && git push`.
       `[skip ci]` stops a needless re-render. post.yml posts approved reels at their slot.
