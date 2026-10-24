@@ -1,18 +1,29 @@
 # Daily run (the scheduled task follows this exactly)
 
-You make 4 reels for @researchwithpranay. They post today at 11:00, 15:00, 19:00 and 23:00 IST, one per slot.
-Each reel is a JSON script; the library renders it. Never write Manim code for a reel.
+You make 5 reels for @researchwithpranay. They post at 11:00, 15:00, 19:00, 23:00 IST today and 02:00 IST
+tonight (the night after), one per slot. Each reel is a JSON script; the library renders it.
+Never write Manim code for a reel.
 
 1. **Set up.** `./setup_local.sh` (local Manim for previews; ~1 min the first time).
-   `python3 analyze.py` (follow its plan; never estimate numbers yourself).
-   Read `FEEDBACK.md` (Pranay's notes; they override everything), `TOPICS.md` (requested topics go first),
-   `STYLE.md` and `SCRIPT_FORMAT.md` in full, and two scripts in `reels/posted/` (or `reels/queue/`).
+   `git pull`, then check `data/insights.json` was updated today (insights.yml pulls it at 07:00 IST).
+   If not, pull again every 2 minutes for up to 10 minutes, then carry on and mention it in your report.
 
-   `python3 approve.py list`: a slot that already holds a queued reel for today (approved or not) is taken;
+2. **Learn from the past.** `python3 analyze.py` and read all of it. Never estimate numbers yourself.
+   - Open the scripts of the best and worst reels it lists (`reels/posted/<id>.json`) and compare them:
+     hook wording, first beat, how fast the picture appears, where the reveal lands, text per beat, visuals.
+   - Update `LEARNINGS.md`: add at most 2 new lessons, each tied to numbers analyze.py printed and the reels
+     that show it; remove or correct any lesson the data now contradicts. Keep it under ~40 lines.
+   - Read `LEARNINGS.md`, `FEEDBACK.md` (Pranay's notes; they override everything), `TOPICS.md` (requested
+     topics go first), `STYLE.md` and `SCRIPT_FORMAT.md` in full.
+   - Today's reels follow analyze.py's plan (which hook / visual / length to keep in exploit slots, what to test
+     in the explore slot, how to spread subjects) and the lessons in LEARNINGS.md.
+
+   `python3 approve.py list`: a slot that already holds a queued reel (approved or not) is taken;
    make reels only for the free slots, and leave existing queued reels alone (Pranay may have put them there).
 
-2. **For each free slot, in order 11 → 15 → 19 → 23** (have the 11:00 reel approved by ~10:30 IST):
-   1. Pick a topic per the plan: not in the last 28 reels; mix subjects across the day.
+3. **For each free slot, in order 11 → 15 → 19 → 23 → 02** (have the 11:00 reel approved by ~10:30 IST):
+   1. Pick a topic per the plan and LEARNINGS.md: not in the last 28 reels; mix subjects across the day.
+      Set `hook_type` and `subject` honestly; they are what analyze.py learns from.
    2. Work out the explanation and check every claim. If unsure of a fact, change the angle or topic.
    3. Write `reels/queue/<id>.json` (id = `YYYY-MM-DD-slug`, today's date).
    4. `python3 make.py <id> --slot <hour> --preview`. Fix until it prints PASS and the preview renders.
@@ -35,9 +46,9 @@ Each reel is a JSON script; the library renders it. Never write Manim code for a
    Never approve a reel whose preview you haven't looked at or whose render failed. Never post by hand.
    Respect a `PAUSED` file and any `"hold": true`.
 
-3. **Clean up.** Remove used topics from `TOPICS.md`; commit and push with `[skip ci]`.
+4. **Clean up.** Remove used topics from `TOPICS.md`. Commit `TOPICS.md` and `LEARNINGS.md` and push with `[skip ci]`.
 
-4. **Report** to Pranay in a few lines: each reel's topic, slot and preview link
+5. **Report** to Pranay in a few lines: what the data says is working (one line, with numbers), each reel's topic, slot and preview link
    (`https://github.com/<owner>/<repo>/releases/tag/reel-<id>`), plus anything that broke and the fix.
    If something is broken that you can't fix in a few minutes (Instagram API error, expired token,
    Actions outage), say plainly what's wrong and what he needs to do. Don't guess.

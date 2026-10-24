@@ -58,6 +58,7 @@ curiosity jump · everyday mystery · myth bust · wrong-answer reveal · visual
 (e.g. #math #physics #engineering #linearalgebra #calculus #stem #machinelearning #science).
 
 ## The 70/30 rule
-Each day `analyze.py` plans 4 reels. Once a hook has 3+ reels older than 48 h, 3 slots reuse the best
-hook (new topics) and 1 slot explores another hook. Topics never repeat within the last 28 reels.
-Mix subjects across the day.
+Each day `analyze.py` plans 5 reels from past performance by hook, subject, visual style, length, beats
+and slot. Once groups have 3+ reels older than 48 h, 4 slots keep what works (new topics) and 1 slot tests
+one thing (rotating between hook, subject and visual). Topics never repeat within the last 28 reels.
+Mix subjects across the day. Lessons accumulate in LEARNINGS.md.

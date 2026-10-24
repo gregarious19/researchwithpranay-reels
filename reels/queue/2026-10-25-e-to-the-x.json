@@ -254,5 +254,6 @@
  ],
  "post_after": "2026-10-25T15:00:00+05:30",
  "est_duration": 51,
- "approved": false
+ "approved": false,
+ "visual": "graph"
 }

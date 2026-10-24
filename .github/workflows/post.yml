@@ -1,6 +1,6 @@
 name: Post reel to Instagram
 
-# Four times a day (11:00, 15:00, 19:00, 23:00 IST) posts ONE reel: the approved queued reel with the
+# Five times a day (11:00, 15:00, 19:00, 23:00, 02:00 IST) posts ONE reel: the approved queued reel with the
 # earliest post_after time that has passed. The daily run approves each reel after make.py prints PASS and
 # the contact sheet looks right. Reels left unapproved or on hold never post. If a slot is missed, its reel
 # goes out at the next slot. The slot hours must match SLOTS in make.py.
@@ -11,6 +11,7 @@ on:
     - cron: "30 9 * * *"    # 09:30 UTC = 15:00 IST
     - cron: "30 13 * * *"   # 13:30 UTC = 19:00 IST
     - cron: "30 17 * * *"   # 17:30 UTC = 23:00 IST
+    - cron: "30 20 * * *"   # 20:30 UTC = 02:00 IST
   workflow_dispatch:
     inputs:
       spec:

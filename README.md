@@ -1,14 +1,14 @@
 # @researchwithpranay reels
 
-Four reels a day explaining complex ideas in math, science and engineering through the math,
+Five reels a day explaining complex ideas in math, science and engineering through the math,
 animated in the style of 3Blue1Brown with [Manim](https://www.manim.community). On-screen text and
 original sound effects, no voice. Written, rendered and posted automatically.
 
 ```
 Claude (daily scheduled task)                    GitHub Actions
-  analyze.py → plan today's 4 reels                render.yml   on push → Manim → MP4 + sheet → release reel-<id>
-  write reels/queue/<id>.json (a script)           post.yml     11/15/19/23 IST → posts the next approved due reel
-  make.py --preview → check the frames             insights.yml 08:00 IST → metrics → data/insights.json
+  analyze.py → learn + plan 5 reels                render.yml   on push → Manim → MP4 + sheet → release reel-<id>
+  write reels/queue/<id>.json (a script)           post.yml     11/15/19/23/02 IST → posts the next approved due reel
+  make.py --preview → check the frames             insights.yml 07:00 IST → metrics → data/insights.json
   push → wait for render → approve                 (and refreshes the Instagram token every Monday)
 ```
 
@@ -73,4 +73,5 @@ Actions → **Pull Instagram insights** → Run workflow. A green run means the 
 | `approve.py` / `analyze.py` / `ig.py` | Approve/hold/drop · performance plan · Instagram API |
 | `reels/queue/` → `reels/posted/` | Scripts waiting to post, then posted (with permalink) |
 | `data/insights.json` | Daily metric snapshots |
+| `LEARNINGS.md` | What the data has taught so far (updated by the daily run) |
 | `TOPICS.md` / `FEEDBACK.md` | Your requests and notes for Claude |

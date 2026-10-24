@@ -13,7 +13,7 @@ real thing after you push.
 """
 import argparse, datetime, glob, json, os, re, subprocess, sys
 
-SLOTS = (11, 15, 19, 23)  # IST; must match post.yml and analyze.py
+SLOTS = (11, 15, 19, 23, 2)  # IST posting hours (02:00 is the night after); must match post.yml
 IST = datetime.timezone(datetime.timedelta(hours=5, minutes=30))
 READ_WPS = 3.0            # must match lib/reel.py
 MIN_S, MAX_S = 28, 90
@@ -214,14 +214,39 @@ def validate(spec, rid):
     return problems, total
 
 
+def slot_time(h, now=None):
+    """Next occurrence of posting hour h (IST) that is still ahead."""
+    now = now or datetime.datetime.now(IST)
+    t = datetime.datetime(now.year, now.month, now.day, h, tzinfo=IST)
+    return t if t > now else t + datetime.timedelta(days=1)
+
+
 def next_slot(taken):
     now = datetime.datetime.now(IST)
-    for day in range(0, 7):
-        d = (now + datetime.timedelta(days=day)).date()
-        for h in SLOTS:
-            t = datetime.datetime(d.year, d.month, d.day, h, tzinfo=IST)
-            if t > now + datetime.timedelta(minutes=45) and t.isoformat() not in taken:
-                return t
+    cands = sorted(datetime.datetime(d.year, d.month, d.day, h, tzinfo=IST)
+                   for d in [(now + datetime.timedelta(days=k)).date() for k in range(8)] for h in SLOTS)
+    for t in cands:
+        if t > now + datetime.timedelta(minutes=45) and t.isoformat() not in taken:
+            return t
+
+
+def visual_style(spec):
+    """What the reel mostly shows: geometry, graph, equations or data (for analyze.py)."""
+    groups = {"geometry": {"plane", "vector", "span", "shape"}, "graph": {"axes", "graph", "curve", "tangent", "area"},
+              "data": {"bars", "numberline"}}
+    counts = {g: 0 for g in groups}
+
+    def walk(steps):
+        for st in steps:
+            if "together" in st:
+                walk(st["together"])
+            for g, kinds in groups.items():
+                if st.get("make") in kinds or (g == "geometry" and ("apply_matrix" in st or "rotate" in st)):
+                    counts[g] += 1
+    for b in spec.get("beats", []):
+        walk(b.get("do", []))
+    top = max(counts, key=counts.get)
+    return top if counts[top] else "equations"
 
 
 def preview(rid):
@@ -270,20 +295,18 @@ def main():
         sys.exit(1)
 
     taken = {json.load(open(p)).get("post_after") for p in glob.glob("reels/queue/*.json") if not p.endswith(f"{a.id}.json")}
-    if a.slot:
-        d = datetime.datetime.now(IST).date()
-        t = datetime.datetime(d.year, d.month, d.day, a.slot, tzinfo=IST)
-        if t <= datetime.datetime.now(IST):
-            t += datetime.timedelta(days=1)
+    if a.slot is not None:
+        t = slot_time(a.slot)
     elif spec.get("post_after"):
         t = datetime.datetime.fromisoformat(spec["post_after"])
     else:
         t = next_slot(taken)
     spec["post_after"] = t.isoformat()
     spec["est_duration"] = round(est)
+    spec["visual"] = visual_style(spec)
     spec.setdefault("approved", False)
     json.dump(spec, open(path, "w"), indent=1, ensure_ascii=False)
-    print(f"PASS  {a.id}: ~{est:.0f}s, {len(spec['beats'])} beats, posts after {spec['post_after']}")
+    print(f"PASS  {a.id}: ~{est:.0f}s, {len(spec['beats'])} beats, {spec['visual']}, posts after {spec['post_after']}")
     if a.preview:
         preview(a.id)
 
