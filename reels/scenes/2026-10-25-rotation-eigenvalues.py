@@ -32,11 +32,14 @@ class Reel(ReelScene):
         arrows = VGroup(*[arrow(x, y, c) for x, y, c in dirs])
         lines = VGroup(*[line_through(x, y, c) for x, y, c in dirs])
         with self.say("Remember, an eigenvector stays on its own span. It just gets stretched or squished.") as t:
+            for k in range(4):
+                self.sfx("tick", offset=k * t.duration * 0.45 / 4.6)
             self.play(LaggedStart(*[GrowArrow(a) for a in arrows], lag_ratio=0.2), run_time=t.duration * 0.45)
             self.play(Create(lines), run_time=t.duration * 0.35)
 
         with self.say("But under a rotation, every vector gets knocked off its span. Not one survives.") as t:
             self.play(ApplyMatrix(R, arrows, about_point=O), run_time=t.duration * 0.55)
+            self.sfx("thud")
             self.play(*[Indicate(a, color=BAD) for a in arrows], run_time=t.duration * 0.3)
 
         # do the algebra anyway
@@ -50,7 +53,9 @@ class Reel(ReelScene):
             self.play(Write(e1), run_time=t.duration * 0.4)
             self.play(Write(e2), run_time=t.duration * 0.4)
         with self.say("you find lambda squared equals negative one. So lambda is i, or negative i.") as t:
+            self.sfx("riser")
             self.play(Write(e3), run_time=t.duration * 0.5)
+            self.sfx("ding")
             self.play(Circumscribe(e3, color=ACCENT2, stroke_width=6), run_time=t.duration * 0.35)
 
         # i is a quarter turn
@@ -68,7 +73,9 @@ class Reel(ReelScene):
         with self.say("Is the algebra just giving nonsense? Not at all. Multiplying by i is itself a quarter turn.") as t:
             self.play(Create(cp), FadeIn(one), run_time=t.duration * 0.3)
             self.play(GrowArrow(z), run_time=t.duration * 0.15)
+            self.sfx("whoosh")
             self.play(Rotate(z, PI / 2, about_point=C), Create(arc), FadeIn(ii), Write(lbl), run_time=t.duration * 0.4)
+            self.sfx("ding")
 
         with self.say("So the algebra was telling you something real. The scaling factor is a rotation.") as t:
             self.play(Indicate(e3, color=ACCENT2, scale_factor=1.15), run_time=t.duration * 0.4)

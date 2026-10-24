@@ -1,5 +1,5 @@
-"""Shared base for every reel: vertical 1080x1920 frame, dark Manim look, Kokoro narration
-with burned-in captions, a hook and an outro.
+"""Shared base for every reel: vertical 1080x1920 frame, dark Manim look, on-screen text
+timed for reading, original sound effects, a hook and an outro. No voice.
 
 A reel's scene file (reels/scenes/<id>.py) looks like:
 
@@ -23,8 +23,8 @@ from contextlib import contextmanager
 from pathlib import Path
 
 from manim import *
-from manim_voiceover import VoiceoverScene
-from manim_voiceover.services.base import SpeechService
+from types import SimpleNamespace
+from lib import sfx
 
 # ---------- frame: 9:16, 9 units wide x 16 tall ----------
 config.pixel_width = 1080
@@ -48,8 +48,7 @@ GOOD = GREEN_C
 SAFE_TOP, SAFE_BOTTOM, SAFE_X = 6.2, -3.4, 4.0
 CAPTION_Y = -4.6
 
-VOICE = os.environ.get("REEL_VOICE", "am_michael")
-SPEED = float(os.environ.get("REEL_SPEED", "0.95"))
+READ_WPS = 3.0     # comfortable reading speed for on-screen text, words per second
 HANDLE = os.environ.get("REEL_HANDLE", "")  # e.g. "@yourhandle"; set as a repo variable
 
 # ---------- encoding: Manim's default (CRF 23) smears thin colored lines on dark backgrounds ----------
@@ -139,58 +138,47 @@ def txt(text, size=48, color=INK, bold=False, width=None):
     return Tex(r"\textsf{" + body + "}", font_size=size, color=color)
 
 
-def spoken(text):
-    """Caption text -> what the voice should say (tidy symbols the TTS would mangle)."""
-    t = text.replace("×", " times ").replace("≈", " about ").replace("→", " to ").replace("=", " equals ")
-    t = t.replace("λ", " lambda ").replace("°", " degrees")
-    t = re.sub(r"\be\^", "e to the ", t)
-    return re.sub(r"\s+", " ", t).strip()
+def read_time(text):
+    """Seconds a line stays up: enough to read it comfortably."""
+    return max(2.2, len(text.split()) / READ_WPS + 0.9)
 
 
-class KokoroService(SpeechService):
-    """Free local voice (Kokoro-82M, ONNX). Model files come from KOKORO_DIR (default models/)."""
+class ReelScene(Scene):
+    """Sounds are added automatically: pop when a line appears, whoosh on clear_all, ding on the hook,
+    chime on the outro, and a soft pad under everything. Call self.sfx("tick"|"ding"|"riser"|"thud"|...)
+    for extra accents on key moments (sparingly: 1-3 per reel)."""
 
-    def __init__(self, voice=VOICE, speed=SPEED, **kwargs):
-        from kokoro_onnx import Kokoro
-        d = Path(os.environ.get("KOKORO_DIR", "models"))
-        self.kokoro = Kokoro(str(d / "kokoro-v1.0.onnx"), str(d / "voices-v1.0.bin"))
-        self.voice, self.speed = voice, speed
-        SpeechService.__init__(self, **kwargs)
+    SFX_GAIN = {"pop": -14, "tick": -16, "whoosh": -15, "ding": -10, "chime": -11, "riser": -14, "thud": -10}
+    PAD_GAIN = -26
 
-    def generate_from_text(self, text, cache_dir=None, path=None, **kwargs):
-        import soundfile as sf
-        cache_dir = cache_dir or self.cache_dir
-        input_data = {"input_text": text, "service": "kokoro", "voice": self.voice, "speed": self.speed}
-        cached = self.get_cached_result(input_data, cache_dir)
-        if cached is not None:
-            return cached
-        audio_path = str(path) if path else self.get_audio_basename(input_data) + ".mp3"
-        samples, sr = self.kokoro.create(spoken(text), voice=self.voice, speed=self.speed, lang="en-us")
-        with tempfile.NamedTemporaryFile(suffix=".wav", delete=False) as f:
-            sf.write(f.name, samples, sr)
-            subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-i", f.name, "-b:a", "192k",
-                            str(Path(cache_dir) / audio_path)], check=True)
-        return {"input_text": text, "input_data": input_data, "original_audio": audio_path}
+    def sfx(self, kind, offset=0.0, gain=None):
+        self.add_sound(sfx.get(kind), time_offset=offset, gain=self.SFX_GAIN.get(kind, -14) if gain is None else gain)
 
+    def tear_down(self):
+        # background pad spanning the whole reel, added last so its length is exact
+        total = self.renderer.time
+        if total > 1:
+            self.add_sound(sfx.pad(total), time_offset=-total, gain=self.PAD_GAIN)
+        super().tear_down()
 
-class ReelScene(VoiceoverScene):
-    def setup(self):
-        super().setup()
-        self.set_speech_service(KokoroService())
-
-    # ---- narration ----
+    # ---- narration (on-screen text) ----
     def caption(self, text):
-        return txt(text, size=52, width=30).move_to([0, CAPTION_Y, 0])
+        return txt(text, size=58, width=26).move_to([0, CAPTION_Y, 0])
 
     @contextmanager
     def say(self, text):
-        """Narrate `text` with a caption. Animations inside the block should use t.duration
-        (or fractions of it) so picture and voice stay in step."""
+        """Show `text` for its reading time. Animations inside the block should use t.duration
+        (or fractions of it); any time left over is waited out before the text leaves."""
         cap = self.caption(text)
-        self.add(cap)
-        with self.voiceover(text=text) as tracker:
-            yield tracker
-        self.remove(cap)
+        dur = read_time(text)
+        self.sfx("pop")
+        self.play(FadeIn(cap, shift=UP * 0.12), run_time=0.25)
+        start = self.renderer.time
+        yield SimpleNamespace(duration=dur)
+        left = dur - (self.renderer.time - start)
+        if left > 0.05:
+            self.wait(left)
+        self.play(FadeOut(cap), run_time=0.2)
 
     # ---- standard pieces ----
     def title(self, text, size=60, color=INK):
@@ -198,24 +186,27 @@ class ReelScene(VoiceoverScene):
         return txt(text, size=size, color=color, bold=True).move_to([0, 5.3, 0])
 
     def hook(self, line, sub=None):
-        """First ~2 s: the question that stops the scroll. Spoken and shown big."""
-        big = txt(line, size=76, bold=True, width=18).move_to([0, 1.5, 0])
+        """First seconds: the question that stops the scroll, shown big."""
+        big = txt(line, size=80, bold=True, width=18).move_to([0, 1.5, 0])
         grp = VGroup(big)
         if sub:
-            grp.add(txt(sub, size=48, color=ACCENT2).next_to(big, DOWN, buff=0.5))
-        with self.voiceover(text=line) as t:
-            self.play(FadeIn(grp, shift=UP * 0.3), run_time=min(0.6, t.duration))
-        self.play(FadeOut(grp), run_time=0.4)
+            grp.add(txt(sub, size=52, color=ACCENT2).next_to(big, DOWN, buff=0.5))
+        self.sfx("ding")
+        self.play(FadeIn(grp, shift=UP * 0.3), run_time=0.5)
+        self.wait(max(1.2, read_time(line) - 0.6))
+        self.sfx("whoosh")
+        self.play(FadeOut(grp, shift=UP * 0.3), run_time=0.4)
 
     def outro(self, line="Follow for more ideas like this."):
         grp = VGroup(txt(line, size=68, bold=True, width=18).move_to([0, 1.0, 0]))
         if HANDLE:
-            grp.add(txt(HANDLE, size=44, color=ACCENT).next_to(grp[0], DOWN, buff=0.4))
+            grp.add(txt(HANDLE, size=48, color=ACCENT).next_to(grp[0], DOWN, buff=0.4))
         self.clear_all(run_time=0.4)
-        with self.voiceover(text=line):
-            self.play(FadeIn(grp, shift=UP * 0.2), run_time=0.6)
-        self.wait(0.6)
+        self.sfx("chime")
+        self.play(FadeIn(grp, shift=UP * 0.2), run_time=0.6)
+        self.wait(2.0)
 
     def clear_all(self, run_time=0.5):
         if self.mobjects:
+            self.sfx("whoosh")
             self.play(*[FadeOut(m) for m in self.mobjects], run_time=run_time)

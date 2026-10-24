@@ -12,8 +12,8 @@ import argparse, ast, datetime, glob, json, os, re, sys
 
 SLOTS = (11, 15, 19, 23)  # IST; must match post.yml and analyze.py
 IST = datetime.timezone(datetime.timedelta(hours=5, minutes=30))
-WORDS_PER_SEC = 2.4        # Kokoro at speed 1.05, measured roughly
-GAP_PER_LINE = 0.9         # animation time between/after lines
+WORDS_PER_SEC = 3.0         # on-screen reading speed (matches lib.reel.READ_WPS)
+GAP_PER_LINE = 1.5         # fade in/out + minimum hold per line
 MIN_S, MAX_S = 28, 90
 MAX_WORDS_PER_LINE = 18
 FIELDS = ("id", "topic", "subject", "hook_type", "caption")

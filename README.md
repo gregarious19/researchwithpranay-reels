@@ -19,7 +19,7 @@ Claude (daily, scheduled task)              GitHub Actions
 - **Anything else** (tone, voice, subjects to avoid): write it in `FEEDBACK.md`.
 - **Hold one reel:** edit its `reels/queue/<id>.json` on GitHub and add `"hold": true`.
 - **Pause everything:** add an empty file named `PAUSED` at the repo root. Delete it to resume.
-- **Voice:** set the repo variable `REEL_VOICE` (default `am_michael`; try `af_heart`, `bm_george`, `am_adam`).
+- **Sound:** no voice; on-screen text plus original synthesized sound effects (`lib/sfx.py`).
 - **Your handle on the outro:** repo variable `REEL_HANDLE`, e.g. `@yourhandle`.
 
 ## One-time setup

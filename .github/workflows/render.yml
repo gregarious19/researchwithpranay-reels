@@ -1,7 +1,7 @@
 name: Render reels
 
-# Renders every new or changed reel in reels/queue (+ its scene in reels/scenes) with Manim and the
-# Kokoro voice, checks its length, and attaches <id>.mp4 and <id>-sheet.png (6 frames) to a GitHub
+# Renders every new or changed reel in reels/queue (+ its scene in reels/scenes) with Manim and its
+# sound effects, normalizes loudness, checks its length, and attaches <id>.mp4 and <id>-sheet.png (6 frames) to a GitHub
 # Release named reel-<id>. Instagram fetches the MP4 from there when the reel is posted.
 on:
   push:
@@ -20,8 +20,7 @@ concurrency:
   cancel-in-progress: false
 
 env:
-  KOKORO_DIR: models
-  REEL_VOICE: ${{ vars.REEL_VOICE || 'am_michael' }}
+  SFX_DIR: out/sfx
   REEL_HANDLE: ${{ vars.REEL_HANDLE || '' }}
 
 jobs:
@@ -68,21 +67,6 @@ jobs:
         if: steps.find.outputs.count != '0'
         run: pip install -q -r requirements.txt
 
-      - name: Voice model (cached)
-        if: steps.find.outputs.count != '0'
-        uses: actions/cache@v4
-        with:
-          path: models
-          key: kokoro-v1.0
-
-      - name: Download voice model if missing
-        if: steps.find.outputs.count != '0'
-        run: |
-          mkdir -p models
-          base=https://github.com/thewh1teagle/kokoro-onnx/releases/download/model-files-v1.0
-          [ -f models/kokoro-v1.0.onnx ] || curl -sSfL -o models/kokoro-v1.0.onnx $base/kokoro-v1.0.onnx
-          [ -f models/voices-v1.0.bin ] || curl -sSfL -o models/voices-v1.0.bin $base/voices-v1.0.bin
-
       - name: Render, check, publish
         if: steps.find.outputs.count != '0'
         env:
@@ -97,7 +81,7 @@ jobs:
               echo "::error::$id failed to render"; failed="$failed $id"; echo "::endgroup::"; continue
             fi
             mp4=$(find out/media/videos -name "$id.mp4" | head -1)
-            cp "$mp4" "out/$id.mp4"
+            ./finish.sh "$mp4" "out/$id.mp4"
             dur=$(ffprobe -v error -show_entries format=duration -of csv=p=0 "out/$id.mp4")
             echo "duration: $dur s"
             python3 -c "import sys; d=float(sys.argv[1]); sys.exit(0 if 20 <= d <= 95 else 1)" "$dur" \
