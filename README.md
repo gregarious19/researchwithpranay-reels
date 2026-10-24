@@ -1,22 +1,22 @@
 # Explainer reels
 
 Four 30–60 second Instagram reels a day explaining math, physics, chemistry, statistics, biology and
-computing ideas, animated with [Manim](https://www.manim.community) and narrated by a free voice
-(Kokoro-82M). Made and posted automatically.
+computing ideas, animated with [Manim](https://www.manim.community) with on-screen text and original sound
+effects (no voice). Made and posted automatically.
 
 ```
 Claude (daily, scheduled task)              GitHub Actions
-  analyze.py → plan 4 reels                   render.yml   on push → Manim + voice → MP4 + contact sheet → release reel-<id>
+  analyze.py → plan 4 reels                   render.yml   on push → Manim + sounds → MP4 + contact sheet → release reel-<id>
   write reels/scenes/<id>.py + queue/<id>.json post.yml     11/15/19/23 IST → posts the next approved due reel
   push → wait for render → check sheet         insights.yml 08:00 IST → metrics → data/insights.json
   approve                                      (and refreshes the Instagram token every Monday)
 ```
 
-**Cost:** ₹0. GitHub Actions is free for public repos, and the voice runs inside Actions.
+**Cost:** ₹0. GitHub Actions is free for public repos, and every sound is synthesized in code.
 
 ## Steering it
 - **Topics you want:** add a line to `TOPICS.md`. They go first.
-- **Anything else** (tone, voice, subjects to avoid): write it in `FEEDBACK.md`.
+- **Anything else** (tone, sounds, subjects to avoid): write it in `FEEDBACK.md`.
 - **Hold one reel:** edit its `reels/queue/<id>.json` on GitHub and add `"hold": true`.
 - **Pause everything:** add an empty file named `PAUSED` at the repo root. Delete it to resume.
 - **Sound:** no voice; on-screen text plus original synthesized sound effects (`lib/sfx.py`).
@@ -56,7 +56,7 @@ Actions → **Pull Instagram insights** → Run workflow. A green run means the 
 | --- | --- |
 | `DAILY_RUN.md` | The exact daily steps Claude follows |
 | `STYLE.md` | Look, structure, narration rules, metadata format |
-| `lib/reel.py` | Shared Manim base: vertical frame, colors, voice, captions, hook, outro |
+| `lib/reel.py` | Shared Manim base: vertical frame, colors, timed text, sound effects, hook, outro |
 | `reels/scenes/<id>.py` | One Manim scene per reel |
 | `reels/queue/<id>.json` | Its caption and posting slot; moves to `reels/posted/` once posted |
 | `make.py` | Pre-push checks (length, caption size, structure) and slot assignment |

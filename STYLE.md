@@ -1,7 +1,7 @@
 # Style and content guide
 
 Read this before writing a reel. One reel = one idea from math, physics, chemistry, statistics,
-biology or computing, explained visually in 30–90 seconds (quality over brevity) with a calm narrated voice.
+biology or computing, explained visually in 30–90 seconds (quality over brevity) with timed on-screen text and sound effects (no voice).
 
 ## The look (Manim, not a whiteboard)
 - Dark background, clean geometry, LaTeX math, smooth transforms. The picture *is* the explanation:
@@ -28,8 +28,9 @@ biology or computing, explained visually in 30–90 seconds (quality over brevit
 ## Narration
 - Write for the ear: short sentences, plain words, "you", "notice", "watch". Name the formal term
   only after the intuition has landed.
-- Narration strings must be plain literals (make.py reads them). The voice reads symbols poorly:
-  write "e to the x", "x squared", "times", not symbols, in `say` text.
+- Text strings must be plain literals (make.py reads them). Write the way you'd explain it out loud, calmly:
+  recall the definition, show it fail or surprise, then reveal. Short clauses; one idea per line.
+- Sound: pops/whooshes/ding/chime are automatic. Add 1–3 accents with self.sfx("tick"|"thud"|"riser"|"ding") on key moments.
 - Accuracy first. If a simplification is a simplification, say "roughly" or "for nice cases".
 
 ## Hooks (analyze.py tracks these as `hook_type`)
