@@ -255,5 +255,11 @@
  "post_after": "2026-10-25T15:00:00+05:30",
  "est_duration": 51,
  "approved": true,
- "visual": "graph"
+ "visual": "graph",
+ "posted": {
+  "media_id": "18187440307421379",
+  "permalink": "https://www.instagram.com/reel/De5LEnzk2VR/",
+  "timestamp": "2026-10-24T22:10:29+0000",
+  "video_url": "https://github.com/gregarious19/researchwithpranay-reels/releases/download/reel-2026-10-25-e-to-the-x/2026-10-25-e-to-the-x.mp4"
+ }
 }
