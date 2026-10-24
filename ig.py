@@ -128,7 +128,7 @@ def cmd_insights():
         print(spec["id"], rec["latest"])
     # account-level follower count, if available
     try:
-        me = call("GET", user_id(), fields="followers_count,media_count")
+        me = call("GET", user_id(), fields="username,followers_count,media_count")
         db.setdefault("_account", []).append({"fetched": now, **me})
     except SystemExit:
         pass
