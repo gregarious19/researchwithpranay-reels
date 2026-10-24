@@ -75,9 +75,14 @@ jobs:
         run: |
           id="${{ steps.pick.outputs.id }}"
           spec="${{ steps.pick.outputs.spec }}"
-          gh release view "reel-$id" >/dev/null || { echo "No rendered video for $id yet (release reel-$id missing)"; exit 1; }
+          gh release view "reel-$id" >/dev/null || { echo "::error title=No video::release reel-$id missing"; exit 1; }
           url="https://github.com/${{ github.repository }}/releases/download/reel-$id/$id.mp4"
-          python3 ig.py publish "$spec" "$url"
+          if ! python3 ig.py publish "$spec" "$url" > publish.log 2>&1; then
+            cat publish.log
+            echo "::error title=Instagram publish failed::$(tail -c 900 publish.log | tr '\n' ' ')"
+            exit 1
+          fi
+          cat publish.log
           mkdir -p reels/posted
           git mv "$spec" "reels/posted/$(basename "$spec")"
           git config user.name "reels-bot"
