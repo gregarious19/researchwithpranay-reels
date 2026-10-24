@@ -21,7 +21,7 @@ concurrency:
 
 jobs:
   insights:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v5
 
@@ -47,7 +47,7 @@ jobs:
 
   refresh-token:
     if: github.event.schedule == '30 2 * * *' || inputs.refresh
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v5
       - name: Refresh on Mondays

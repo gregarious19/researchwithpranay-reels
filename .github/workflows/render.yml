@@ -25,7 +25,7 @@ env:
 
 jobs:
   render:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v5
@@ -75,22 +75,22 @@ jobs:
         run: |
           mkdir -p out
           failed=""
-          while read -r id; do
+          while read -r id <&3; do
             echo "::group::$id"
-            if ! REEL_SPEC="reels/queue/$id.json" manim render -r 1080,1920 --fps 30 --disable_caching --media_dir out/media -o "$id" lib/build.py Reel; then
+            if ! REEL_SPEC="reels/queue/$id.json" manim render -r 1080,1920 --fps 30 --disable_caching --media_dir out/media -o "$id" lib/build.py Reel < /dev/null; then
               echo "::error::$id failed to render"; failed="$failed $id"; echo "::endgroup::"; continue
             fi
             mp4=$(find out/media/videos -name "$id.mp4" | head -1)
-            ./finish.sh "$mp4" "out/$id.mp4"
+            ./finish.sh "$mp4" "out/$id.mp4" < /dev/null
             dur=$(ffprobe -v error -show_entries format=duration -of csv=p=0 "out/$id.mp4")
             echo "duration: $dur s"
             python3 -c "import sys; d=float(sys.argv[1]); sys.exit(0 if 20 <= d <= 95 else 1)" "$dur" \
               || { echo "::error::$id is ${dur}s; reels must be 20-95 s"; failed="$failed $id"; echo "::endgroup::"; continue; }
-            ffmpeg -v error -y -i "out/$id.mp4" -vf "fps=6/$dur,scale=360:-1,tile=6x1:padding=8:color=white" -frames:v 1 "out/$id-sheet.png"
+            ffmpeg -nostdin -v error -y -i "out/$id.mp4" -vf "fps=6/$dur,scale=360:-1,tile=6x1:padding=8:color=white" -frames:v 1 "out/$id-sheet.png"
             gh release delete "reel-$id" --yes --cleanup-tag 2>/dev/null || true
             gh release create "reel-$id" "out/$id.mp4" "out/$id-sheet.png" --title "Reel: $id" \
               --notes "$(python3 -c "import json,sys;s=json.load(open(sys.argv[1]));print('Topic: '+s.get('topic','')+'\n\nDuration: '+sys.argv[2]+' s\n\nPosts after: '+s.get('post_after','next slot')+'\n\n'+s.get('caption',''))" "reels/queue/$id.json" "$dur")"
             echo "Preview: https://github.com/${{ github.repository }}/releases/tag/reel-$id"
             echo "::endgroup::"
-          done < todo.txt
+          done 3< todo.txt
           [ -z "$failed" ] || { echo "Failed:$failed"; exit 1; }
