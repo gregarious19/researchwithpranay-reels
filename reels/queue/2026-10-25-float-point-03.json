@@ -1,0 +1,338 @@
+{
+ "id": "2026-10-25-float-point-03",
+ "topic": "why 0.1 + 0.2 = 0.30000000000000004 in floating point",
+ "subject": "computing",
+ "hook_type": "wrong-answer reveal",
+ "caption": "0.1 has no finite binary expansion, so a 64-bit double stores a value slightly above it, and the same for 0.2. Their exact sum lands exactly halfway between two neighbouring doubles, and round-half-to-even picks the upper one: 0.30000000000000004.\n\nShare this with a programmer friend.\n\n#programming #computerscience #python #javascript #floatingpoint #coding #math #stem #softwareengineering",
+ "cover_at": 1.0,
+ "hook": "Ask a computer for 0.1 + 0.2. It won't say 0.3.",
+ "beats": [
+  {
+   "text": "Type it into Python or JavaScript, and this is what comes back.",
+   "do": [
+    {
+     "make": "tex",
+     "name": "q",
+     "tex": "0.1 + 0.2",
+     "size": 90,
+     "at": [
+      0,
+      4.4
+     ]
+    },
+    {
+     "make": "tex",
+     "name": "q2",
+     "tex": [
+      "=",
+      "0.3000000000000000",
+      "4"
+     ],
+     "size": 70,
+     "next_to": "q",
+     "buff": 0.4,
+     "colors": {
+      "2": "red"
+     }
+    },
+    {
+     "sfx": "thud"
+    }
+   ]
+  },
+  {
+   "text": "The adding isn't the problem. Computers count in binary, and in binary, one tenth never ends.",
+   "do": [
+    {
+     "make": "tex",
+     "name": "b1",
+     "tex": [
+      "0.1",
+      "=",
+      "0.000110011001100\\ldots_2"
+     ],
+     "size": 60,
+     "at": [
+      0,
+      1.6
+     ],
+     "colors": {
+      "0": "blue",
+      "2": "blue"
+     }
+    },
+    {
+     "make": "tex",
+     "name": "b2",
+     "tex": [
+      "\\tfrac13",
+      "=",
+      "0.333333\\ldots_{10}"
+     ],
+     "size": 60,
+     "next_to": "b1",
+     "buff": 0.5,
+     "colors": {
+      "0": "teal",
+      "2": "teal"
+     }
+    }
+   ]
+  },
+  {
+   "text": "Just like one third in decimal. So a 64-bit double has to round it, and stores a value slightly too big.",
+   "do": [
+    {
+     "make": "tex",
+     "name": "s1",
+     "tex": [
+      "\\text{stored } 0.1",
+      "=",
+      "0.1 + 5.55\\times10^{-18}"
+     ],
+     "size": 56,
+     "next_to": "b2",
+     "buff": 0.7,
+     "colors": {
+      "2": "yellow"
+     }
+    },
+    {
+     "make": "tex",
+     "name": "s2",
+     "tex": [
+      "\\text{stored } 0.2",
+      "=",
+      "0.2 + 1.11\\times10^{-17}"
+     ],
+     "size": 56,
+     "next_to": "s1",
+     "buff": 0.35,
+     "colors": {
+      "2": "yellow"
+     }
+    }
+   ]
+  },
+  {
+   "do": [
+    {
+     "clear": true
+    }
+   ]
+  },
+  {
+   "text": "Now zoom in near 0.3. Doubles there are spaced $2^{-54} \\approx 5.6\\times10^{-17}$ apart. Here are two neighbours.",
+   "do": [
+    {
+     "make": "numberline",
+     "name": "NL",
+     "range": [
+      -3.5,
+      3.5,
+      1
+     ],
+     "numbers": false,
+     "length": 7.6,
+     "at": [
+      0,
+      1.6
+     ]
+    },
+    {
+     "make": "dot",
+     "name": "L",
+     "on": "NL",
+     "at": [
+      -3,
+      0
+     ],
+     "color": "blue"
+    },
+    {
+     "make": "dot",
+     "name": "R",
+     "on": "NL",
+     "at": [
+      3,
+      0
+     ],
+     "color": "blue"
+    },
+    {
+     "make": "tex",
+     "name": "Ll",
+     "tex": "0.3 - 1.11\\times10^{-17}",
+     "size": 44,
+     "color": "blue",
+     "at": [
+      -2.1,
+      2.4
+     ]
+    },
+    {
+     "make": "tex",
+     "name": "Rl",
+     "tex": "0.3 + 4.44\\times10^{-17}",
+     "size": 44,
+     "color": "blue",
+     "at": [
+      2.1,
+      2.4
+     ]
+    }
+   ]
+  },
+  {
+   "text": "The true 0.3 sits closer to the left one. That's what you get when you type 0.3.",
+   "do": [
+    {
+     "make": "dot",
+     "name": "T",
+     "on": "NL",
+     "at": [
+      -1.8,
+      0
+     ],
+     "color": "green"
+    },
+    {
+     "make": "pointer",
+     "name": "Tp",
+     "to": "T",
+     "text": "true 0.3",
+     "side": "down",
+     "buff": 0.8,
+     "color": "green"
+    }
+   ]
+  },
+  {
+   "text": "But the stored 0.1 and 0.2 were both a bit too big. Their exact sum lands here.",
+   "do": [
+    {
+     "make": "dot",
+     "name": "S",
+     "on": "NL",
+     "at": [
+      0,
+      0
+     ],
+     "color": "yellow"
+    },
+    {
+     "make": "pointer",
+     "name": "Sp",
+     "to": "S",
+     "text": "exact sum",
+     "side": "down",
+     "buff": 1.9,
+     "color": "yellow"
+    }
+   ]
+  },
+  {
+   "text": "Exactly halfway. The tie goes to the neighbour whose last bit is even, and that's the right one.",
+   "do": [
+    {
+     "indicate": "S",
+     "color": "yellow"
+    },
+    {
+     "sfx": "riser"
+    },
+    {
+     "recolor": "R",
+     "color": "red"
+    },
+    {
+     "indicate": "Rl",
+     "color": "red"
+    }
+   ]
+  },
+  {
+   "text": "So the computer reports the next double up: one step above the 0.3 you typed.",
+   "do": [
+    {
+     "make": "tex",
+     "name": "ans",
+     "tex": [
+      "0.3000000000000000",
+      "4"
+     ],
+     "size": 68,
+     "at": [
+      0,
+      -1.9
+     ],
+     "colors": {
+      "1": "red"
+     }
+    },
+    {
+     "sfx": "ding"
+    },
+    {
+     "make": "box",
+     "name": "bx",
+     "around": "ans"
+    },
+    {
+     "wait": 0.8
+    }
+   ]
+  },
+  {
+   "do": [
+    {
+     "clear": true
+    }
+   ]
+  },
+  {
+   "text": "So never compare floats with ==. Check that they're within a small tolerance instead.",
+   "do": [
+    {
+     "together": [
+      {
+       "make": "tex",
+       "name": "g1",
+       "tex": [
+        "a == b"
+       ],
+       "size": 96,
+       "color": "red",
+       "at": [
+        0,
+        3.6
+       ]
+      },
+      {
+       "make": "tex",
+       "name": "g2",
+       "tex": [
+        "|a - b|",
+        "<",
+        "\\varepsilon"
+       ],
+       "size": 96,
+       "next_to": "g1",
+       "buff": 0.9,
+       "colors": {
+        "0": "green",
+        "2": "green"
+       }
+      }
+     ],
+     "lag": 0.3
+    }
+   ]
+  }
+ ],
+ "outro": "Follow for more ideas like this.",
+ "post_after": "2026-10-26T07:00:00+05:30",
+ "est_duration": 71,
+ "visual": "data",
+ "approved": false
+}
