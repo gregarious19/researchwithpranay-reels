@@ -1,0 +1,346 @@
+{
+ "id": "2026-10-25-harmonic-diverges",
+ "topic": "why the harmonic series 1 + 1/2 + 1/3 + ... diverges (area under 1/x)",
+ "subject": "math",
+ "hook_type": "curiosity jump",
+ "caption": "Draw each term of 1 + 1/2 + 1/3 + … as a bar and the curve y = 1/x hides underneath. The area under that curve is ln x, which never stops growing, so the sum is infinite, even though a million terms only reach about 14.4.\n\nShare this with someone taking calculus.\n\n#calculus #math #mathematics #series #infinity #stem #learnmath #engineering",
+ "cover_at": 1.0,
+ "hook": "Add smaller and smaller pieces forever. Can the total still be infinite?",
+ "sub": "1 + 1/2 + 1/3 + 1/4 + …",
+ "beats": [
+  {
+   "text": "This is the harmonic series. Every term is smaller than the last, and they shrink toward zero.",
+   "do": [
+    {
+     "make": "tex",
+     "name": "s",
+     "tex": [
+      "1",
+      "+\\frac{1}{2}",
+      "+\\frac{1}{3}",
+      "+\\frac{1}{4}",
+      "+\\cdots"
+     ],
+     "size": 84,
+     "at": [
+      0,
+      5.3
+     ],
+     "colors": {
+      "0": "blue",
+      "1": "blue",
+      "2": "blue",
+      "3": "blue"
+     }
+    }
+   ]
+  },
+  {
+   "text": "Draw each term as a bar of width one. Then the sum is just the total area of the bars.",
+   "do": [
+    {
+     "make": "axes",
+     "name": "ax",
+     "x": [
+      0,
+      9.5,
+      1
+     ],
+     "y": [
+      0,
+      1.2,
+      0.5
+     ],
+     "size": [
+      7.4,
+      5.0
+     ],
+     "at": [
+      0,
+      1.4
+     ],
+     "numbers": true
+    },
+    {
+     "make": "graph",
+     "name": "steps",
+     "on": "ax",
+     "fn": "1/floor(x)",
+     "x": [
+      1,
+      8.999
+     ],
+     "color": "blue"
+    },
+    {
+     "make": "area",
+     "name": "ab",
+     "graph": "steps",
+     "x": [
+      1,
+      8.999
+     ],
+     "color": "blue",
+     "opacity": 0.35
+    }
+   ]
+  },
+  {
+   "text": "Now lay the curve $y = 1/x$ over the bars. Notice that it always stays underneath them.",
+   "do": [
+    {
+     "make": "graph",
+     "name": "c",
+     "on": "ax",
+     "fn": "1/x",
+     "x": [
+      0.9,
+      9.3
+     ],
+     "color": "yellow"
+    },
+    {
+     "make": "area",
+     "name": "ac",
+     "graph": "c",
+     "x": [
+      1,
+      9
+     ],
+     "color": "yellow",
+     "opacity": 0.3
+    }
+   ]
+  },
+  {
+   "text": "So the bars hold more area than the curve does. And the area under $1/x$ is the natural log.",
+   "do": [
+    {
+     "make": "tex",
+     "name": "ineq",
+     "tex": [
+      "\\sum_{k=1}^{n}\\frac{1}{k}",
+      ">",
+      "\\int_1^{n+1}\\frac{dx}{x}",
+      "=",
+      "\\ln(n+1)"
+     ],
+     "size": 60,
+     "at": [
+      0,
+      -2.35
+     ],
+     "colors": {
+      "0": "blue",
+      "2": "yellow",
+      "4": "yellow"
+     }
+    }
+   ]
+  },
+  {
+   "do": [
+    {
+     "hide": [
+      "ax",
+      "steps",
+      "ab",
+      "c",
+      "ac"
+     ],
+     "time": 0.5
+    },
+    {
+     "move": "ineq",
+     "to": [
+      0,
+      5.6
+     ],
+     "scale": 0.85
+    },
+    {
+     "hide": "s",
+     "time": 0.3
+    }
+   ]
+  },
+  {
+   "text": "But $\\ln x$ never levels off. Watch it as $x$ runs all the way to a thousand.",
+   "do": [
+    {
+     "make": "axes",
+     "name": "ax2",
+     "x": [
+      0,
+      1000,
+      250
+     ],
+     "y": [
+      0,
+      8,
+      2
+     ],
+     "size": [
+      7.2,
+      4.4
+     ],
+     "at": [
+      0,
+      1.5
+     ],
+     "numbers": true
+    },
+    {
+     "make": "graph",
+     "name": "lg",
+     "on": "ax2",
+     "fn": "log(x)",
+     "x": [
+      1,
+      1000
+     ],
+     "color": "yellow"
+    },
+    {
+     "make": "tracker",
+     "name": "t",
+     "value": 1
+    },
+    {
+     "make": "dot",
+     "name": "p",
+     "follow": "lg",
+     "x": "t",
+     "color": "yellow"
+    },
+    {
+     "make": "readout",
+     "name": "r",
+     "tracker": "t",
+     "fn": "log(x)",
+     "label": "\\ln x =",
+     "decimals": 2,
+     "at": [
+      0,
+      4.3
+     ],
+     "color": "yellow"
+    },
+    {
+     "sfx": "whoosh"
+    },
+    {
+     "slide": "t",
+     "to": 1000,
+     "time": 3.0
+    }
+   ]
+  },
+  {
+   "text": "It's slow, but it has no ceiling. Pick any height, and some $x$ gets past it. So the bars do too.",
+   "do": [
+    {
+     "sfx": "riser"
+    },
+    {
+     "make": "tex",
+     "name": "res",
+     "tex": [
+      "1+\\tfrac12+\\tfrac13+\\tfrac14+\\cdots",
+      "=",
+      "\\infty"
+     ],
+     "size": 70,
+     "at": [
+      0,
+      -1.85
+     ],
+     "colors": {
+      "2": "red"
+     }
+    },
+    {
+     "sfx": "ding"
+    },
+    {
+     "make": "box",
+     "name": "bx",
+     "around": "res"
+    }
+   ]
+  },
+  {
+   "text": "It's just very patient. A million terms only add up to about 14.39.",
+   "do": [
+    {
+     "hide": "bx",
+     "time": 0.3
+    },
+    {
+     "make": "tex",
+     "name": "hm",
+     "tex": [
+      "1+\\tfrac12+\\cdots+\\tfrac{1}{10^6}",
+      "\\approx",
+      "14.39"
+     ],
+     "size": 54,
+     "colors": {
+      "2": "blue"
+     },
+     "next_to": "res",
+     "buff": 0.4
+    }
+   ]
+  },
+  {
+   "do": [
+    {
+     "clear": true
+    }
+   ]
+  },
+  {
+   "text": "Shrinking terms aren't enough. They have to shrink fast enough: the squares $1/n^2$ add up to just $\\pi^2/6$.",
+   "do": [
+    {
+     "make": "tex",
+     "name": "g1",
+     "tex": [
+      "\\sum \\frac{1}{n}",
+      "=",
+      "\\infty"
+     ],
+     "size": 96,
+     "at": [
+      0,
+      3.4
+     ],
+     "colors": {
+      "2": "red"
+     }
+    },
+    {
+     "make": "tex",
+     "name": "g2",
+     "tex": [
+      "\\sum \\frac{1}{n^2}",
+      "=",
+      "\\frac{\\pi^2}{6}"
+     ],
+     "size": 96,
+     "next_to": "g1",
+     "buff": 0.9,
+     "colors": {
+      "2": "green"
+     }
+    }
+   ]
+  }
+ ],
+ "outro": "Follow for more ideas like this.",
+ "post_after": "2026-10-25T21:00:00+05:30",
+ "est_duration": 69,
+ "visual": "graph",
+ "approved": false
+}
