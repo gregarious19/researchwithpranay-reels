@@ -1,0 +1,403 @@
+{
+ "id": "2026-10-25-learning-rate-diverge",
+ "topic": "why too large a learning rate makes gradient descent diverge",
+ "subject": "computing",
+ "hook_type": "wrong-answer reveal",
+ "caption": "On f(x) = x², each gradient descent step multiplies x by (1 − 2η). Step size η = 0.1 creeps, η = 0.5 lands in one step, and any η above 1 overshoots further every time. Curvature sets the speed limit: η < 2/f″.\n\nShare this with someone tuning a learning rate right now.\n\n#machinelearning #gradientdescent #deeplearning #optimization #ai #computerscience #math #stem",
+ "cover_at": 1.0,
+ "hook": "Bigger steps should reach the bottom faster. They don't.",
+ "sub": "Gradient descent, in one picture.",
+ "beats": [
+  {
+   "text": "Gradient descent finds the bottom of a valley by stepping against the slope, scaled by a step size $\\eta$.",
+   "do": [
+    {
+     "make": "tex",
+     "name": "upd",
+     "tex": [
+      "x",
+      "\\leftarrow",
+      "x - ",
+      "\\eta",
+      "f'(x)"
+     ],
+     "size": 84,
+     "at": [
+      0,
+      5.3
+     ],
+     "colors": {
+      "3": "yellow"
+     }
+    },
+    {
+     "make": "axes",
+     "name": "ax",
+     "x": [
+      -3,
+      3,
+      1
+     ],
+     "y": [
+      0,
+      9,
+      3
+     ],
+     "size": [
+      7.4,
+      6.0
+     ],
+     "at": [
+      0,
+      1.0
+     ],
+     "labels": [
+      "x",
+      "f"
+     ]
+    },
+    {
+     "make": "graph",
+     "name": "g",
+     "on": "ax",
+     "fn": "x^2",
+     "x": [
+      -3,
+      3
+     ],
+     "color": "blue"
+    }
+   ]
+  },
+  {
+   "text": "The simplest valley: $f(x) = x^2$, whose slope is $2x$. Start at $x = 2$.",
+   "do": [
+    {
+     "make": "dot",
+     "name": "p0",
+     "on": "ax",
+     "at": [
+      2,
+      4
+     ],
+     "color": "yellow"
+    }
+   ]
+  },
+  {
+   "text": "With a small step, $\\eta = 0.1$, it creeps down: 1.6, then 1.28, then 1.02.",
+   "do": [
+    {
+     "make": "line",
+     "name": "a1",
+     "on": "ax",
+     "from": [
+      2,
+      4
+     ],
+     "to": [
+      1.6,
+      2.56
+     ],
+     "color": "teal"
+    },
+    {
+     "make": "dot",
+     "name": "d1",
+     "on": "ax",
+     "at": [
+      1.6,
+      2.56
+     ],
+     "color": "teal"
+    },
+    {
+     "make": "line",
+     "name": "a2",
+     "on": "ax",
+     "from": [
+      1.6,
+      2.56
+     ],
+     "to": [
+      1.28,
+      1.6384
+     ],
+     "color": "teal"
+    },
+    {
+     "make": "dot",
+     "name": "d2",
+     "on": "ax",
+     "at": [
+      1.28,
+      1.6384
+     ],
+     "color": "teal"
+    },
+    {
+     "make": "line",
+     "name": "a3",
+     "on": "ax",
+     "from": [
+      1.28,
+      1.6384
+     ],
+     "to": [
+      1.024,
+      1.0486
+     ],
+     "color": "teal"
+    },
+    {
+     "make": "dot",
+     "name": "d3",
+     "on": "ax",
+     "at": [
+      1.024,
+      1.0486
+     ],
+     "color": "teal"
+    }
+   ]
+  },
+  {
+   "text": "Too slow. So surely a bigger step gets there faster? Try $\\eta = 1.1$.",
+   "do": [
+    {
+     "hide": [
+      "a1",
+      "a2",
+      "a3",
+      "d1",
+      "d2",
+      "d3"
+     ]
+    },
+    {
+     "morph": "upd",
+     "into": {
+      "make": "tex",
+      "tex": [
+       "x",
+       "\\leftarrow",
+       "x - ",
+       "1.1",
+       "\\cdot 2x"
+      ],
+      "size": 84,
+      "at": [
+       0,
+       5.3
+      ],
+      "colors": {
+       "3": "red"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "text": "It overshoots to $-2.4$, then to $2.88$, landing higher every time.",
+   "do": [
+    {
+     "make": "line",
+     "name": "b1",
+     "on": "ax",
+     "from": [
+      2,
+      4
+     ],
+     "to": [
+      -2.4,
+      5.76
+     ],
+     "color": "red"
+    },
+    {
+     "make": "dot",
+     "name": "e1",
+     "on": "ax",
+     "at": [
+      -2.4,
+      5.76
+     ],
+     "color": "red"
+    },
+    {
+     "sfx": "thud"
+    },
+    {
+     "make": "line",
+     "name": "b2",
+     "on": "ax",
+     "from": [
+      -2.4,
+      5.76
+     ],
+     "to": [
+      2.88,
+      8.2944
+     ],
+     "color": "red"
+    },
+    {
+     "make": "dot",
+     "name": "e2",
+     "on": "ax",
+     "at": [
+      2.88,
+      8.2944
+     ],
+     "color": "red"
+    },
+    {
+     "sfx": "thud"
+    }
+   ]
+  },
+  {
+   "do": [
+    {
+     "clear": true
+    }
+   ]
+  },
+  {
+   "text": "Here's why. Every step multiplies $x$ by the same factor.",
+   "do": [
+    {
+     "make": "tex",
+     "name": "f1",
+     "tex": [
+      "x_{\\text{new}}",
+      "=",
+      "x - \\eta\\cdot 2x"
+     ],
+     "size": 96,
+     "at": [
+      0,
+      3.6
+     ]
+    },
+    {
+     "make": "tex",
+     "name": "f2",
+     "tex": [
+      "=",
+      "(1 - 2\\eta)",
+      "\\,x"
+     ],
+     "size": 96,
+     "next_to": "f1",
+     "side": "down",
+     "buff": 0.6,
+     "colors": {
+      "1": "yellow"
+     }
+    }
+   ]
+  },
+  {
+   "text": "If that factor has size above 1, each step makes things worse. That happens for every $\\eta > 1$.",
+   "do": [
+    {
+     "sfx": "riser"
+    },
+    {
+     "make": "tex",
+     "name": "cond",
+     "tex": [
+      "|1 - 2\\eta| < 1",
+      "\\iff",
+      "0 < \\eta < 1"
+     ],
+     "size": 66,
+     "next_to": "f2",
+     "side": "down",
+     "buff": 1.0,
+     "colors": {
+      "2": "green"
+     }
+    },
+    {
+     "sfx": "ding"
+    },
+    {
+     "make": "box",
+     "name": "bc",
+     "around": "cond",
+     "color": "green"
+    }
+   ]
+  },
+  {
+   "text": "And $\\eta = 0.5$ makes the factor exactly zero: one step lands right at the bottom.",
+   "do": [
+    {
+     "make": "tex",
+     "name": "half",
+     "tex": [
+      "\\eta = 0.5",
+      "\\Rightarrow",
+      "x_{\\text{new}} = 0"
+     ],
+     "size": 72,
+     "next_to": "cond",
+     "side": "down",
+     "buff": 0.9,
+     "colors": {
+      "0": "teal"
+     }
+    }
+   ]
+  },
+  {
+   "text": "For any quadratic valley the limit is $\\eta < 2/f''$: the sharper the curve, the smaller the step must be.",
+   "do": [
+    {
+     "hide": [
+      "f1",
+      "f2",
+      "half",
+      "bc"
+     ]
+    },
+    {
+     "morph": "cond",
+     "into": {
+      "make": "tex",
+      "tex": [
+       "\\eta",
+       "<",
+       "\\frac{2}{f''}"
+      ],
+      "size": 130,
+      "at": [
+       0,
+       2.0
+      ],
+      "colors": {
+       "0": "yellow",
+       "2": "green"
+      }
+     }
+    },
+    {
+     "make": "box",
+     "name": "bf",
+     "around": "cond",
+     "color": "yellow"
+    },
+    {
+     "wait": 1.2
+    }
+   ]
+  }
+ ],
+ "outro": "Follow for more ideas like this.",
+ "post_after": "2026-10-25T23:00:00+05:30",
+ "est_duration": 63,
+ "visual": "graph",
+ "approved": false
+}
