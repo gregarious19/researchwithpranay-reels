@@ -1,13 +1,13 @@
 # @researchwithpranay reels
 
-Twelve reels a day (one every 2 hours) explaining complex ideas in math, science and engineering through the math,
+Five reels a day explaining complex ideas in math, science and engineering through the math,
 animated in the style of 3Blue1Brown with [Manim](https://www.manim.community). On-screen text and
 original sound effects, no voice. Written, rendered and posted automatically.
 
 ```
 Claude (daily scheduled task)                    GitHub Actions
-  analyze.py → learn + plan 12 reels               render.yml   on push → Manim → MP4 + sheet → release reel-<id>
-  write reels/queue/<id>.json (a script)           post.yml     every 2 h 11:00–09:00 IST → posts the next approved due reel
+  analyze.py → learn + plan 5 reels                render.yml   on push → Manim → MP4 + sheet → release reel-<id>
+  write reels/queue/<id>.json (a script)           post.yml     11/15/19/23/02 IST → posts the next approved due reel
   make.py --preview → check the frames             insights.yml 07:00 IST → metrics → data/insights.json
   push → wait for render → approve                 (and refreshes the Instagram token every Monday)
 ```

@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Check a reel script, set its posting slot, and optionally render a quick local preview.
 
-    python3 make.py <id> [--slot 11|13|15|17|19|21|23|1|3|5|7|9] [--preview]
+    python3 make.py <id> [--slot 11|15|19|23|2] [--preview]
 
 The script is reels/queue/<id>.json (format: SCRIPT_FORMAT.md). Checks everything that can be checked
 without rendering: fields, steps, component names, references to things on screen, colors, functions,
@@ -13,9 +13,9 @@ real thing after you push.
 """
 import argparse, datetime, glob, json, os, re, subprocess, sys
 
-# IST posting hours in posting order: every 2 h from 11:00 to 09:00 the next morning (hours before 11 are the
-# night after the daily run). Must match post.yml.
-SLOTS = (11, 13, 15, 17, 19, 21, 23, 1, 3, 5, 7, 9)
+# IST posting hours in posting order: 11:00, 15:00, 19:00, 23:00 and 02:00 (hours before 11 are the night after
+# the daily run). Must match post.yml.
+SLOTS = (11, 15, 19, 23, 2)
 IST = datetime.timezone(datetime.timedelta(hours=5, minutes=30))
 READ_WPS = 3.0            # must match lib/reel.py
 MIN_S, MAX_S = 28, 90

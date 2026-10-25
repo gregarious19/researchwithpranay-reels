@@ -8,7 +8,7 @@ views, hold rate (avg watch time / length), share+save rate and comment rate. Th
 - best and worst reels (with their hooks), to learn from concretely
 - averages by hook type, subject, visual style, length, number of beats and posting slot
   (only reels at least 48 h old count; a group needs 3+ reels before it's called a winner)
-- a plan for today's 12 reels: 9 exploit what works, 3 explore something new (rotating what's tested)
+- a plan for today's 5 reels: 4 exploit what works, 1 explores something new (rotating what's tested)
 """
 import datetime, glob, json, os
 
@@ -146,7 +146,8 @@ def main():
     day = datetime.date.today().toordinal()
     dims = [("hook_type", HOOKS), ("subject", SUBJECTS), ("visual", VISUALS)]
     test_dim, options = dims[day % len(dims)]          # rotate what gets tested
-    explore_slots = {SLOTS[(day + k * 4) % len(SLOTS)] for k in range(3)}  # 3 of 12 test, spread out, rotating
+    n_explore = max(1, len(SLOTS) // 4)                 # about a quarter of the slots test, at least 1
+    explore_slots = {SLOTS[(day + k * (len(SLOTS) // n_explore)) % len(SLOTS)] for k in range(n_explore)}
     counts = {o: sum(1 for r in rows if r[test_dim] == o) for o in options}
     untried = sorted(options, key=lambda o: (counts[o], options.index(o)))
     keep = ", ".join(f"{k.replace('_', ' ')} **{v}**" for k, v in best.items() if k in ("hook_type", "visual", "length", "beats"))
@@ -171,7 +172,7 @@ def main():
         print(f"\nSubjects: **{best['subject']}** works best so far; give it 2 of today's slots and spread the "
               f"rest over other subjects (never all one subject).")
     else:
-        print("\nSubjects: mix them; at least 5 different subjects today, never two of the same subject in a row.")
+        print("\nSubjects: mix them; at least 3 different subjects today, never two of the same subject in a row.")
     if "slot" in best:
         print(f"\nBest posting slot so far: **{best['slot']}** IST.")
     recent = [r["topic"] for r in rows[-28:] if r["topic"]]
