@@ -301,5 +301,11 @@
  "post_after": "2026-10-25T11:00:00+05:30",
  "est_duration": 64,
  "visual": "equations",
- "approved": true
+ "approved": true,
+ "posted": {
+  "media_id": "18274043131306002",
+  "permalink": "https://www.instagram.com/reel/De5-mhzk7rX/",
+  "timestamp": "2026-10-25T05:41:06+0000",
+  "video_url": "https://github.com/gregarious19/researchwithpranay-reels/releases/download/reel-2026-10-25-i-to-the-i/2026-10-25-i-to-the-i.mp4"
+ }
 }
