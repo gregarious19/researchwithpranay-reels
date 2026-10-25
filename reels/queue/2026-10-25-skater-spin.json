@@ -1,0 +1,271 @@
+{
+ "id": "2026-10-25-skater-spin",
+ "topic": "why a spinning skater speeds up: conservation of angular momentum L = Iω",
+ "subject": "physics",
+ "hook_type": "everyday mystery",
+ "caption": "Angular momentum L = Iω can't change without an outside torque. Halve the distance of the arms and the moment of inertia drops four times, so the spin rate goes up four times (in the simplest model). Her energy rises too, and it comes from her muscles.\n\nShare this with someone studying mechanics.\n\n#physics #mechanics #angularmomentum #rotation #science #stem #engineering #iceskating",
+ "cover_at": 1.0,
+ "hook": "Why does a spinning skater speed up just by pulling her arms in?",
+ "sub": "Nothing pushed her.",
+ "beats": [
+  {
+   "text": "With almost nothing twisting her from outside, one quantity can't change: her angular momentum.",
+   "do": [
+    {
+     "make": "tex",
+     "name": "L",
+     "tex": [
+      "L",
+      "=",
+      "I",
+      "\\,\\omega"
+     ],
+     "size": 120,
+     "at": [
+      0,
+      4.4
+     ],
+     "colors": {
+      "0": "yellow",
+      "2": "blue",
+      "3": "teal"
+     }
+    },
+    {
+     "make": "text",
+     "name": "lc",
+     "text": "stays constant",
+     "size": 52,
+     "color": "yellow",
+     "next_to": "L",
+     "buff": 0.35
+    }
+   ]
+  },
+  {
+   "text": "$I$ is the moment of inertia: it measures how far her mass sits from the spin axis.",
+   "do": [
+    {
+     "make": "tex",
+     "name": "I",
+     "tex": [
+      "I",
+      "=",
+      "\\sum m\\,",
+      "r^2"
+     ],
+     "size": 100,
+     "at": [
+      0,
+      1.6
+     ],
+     "colors": {
+      "0": "blue",
+      "3": "brown"
+     }
+    }
+   ]
+  },
+  {
+   "text": "In the simplest model, think of her arms as two weights held at distance $r$.",
+   "do": [
+    {
+     "morph": "I",
+     "into": {
+      "make": "tex",
+      "tex": [
+       "I",
+       "=",
+       "2m\\,",
+       "r^2"
+      ],
+      "size": 100,
+      "at": [
+       0,
+       1.6
+      ],
+      "colors": {
+       "0": "blue",
+       "3": "brown"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "text": "Pull the weights in to half the distance. Because of that square, $I$ drops by a factor of four.",
+   "do": [
+    {
+     "make": "tex",
+     "name": "half",
+     "tex": [
+      "r \\to \\tfrac{r}{2}",
+      "\\quad\\Rightarrow\\quad",
+      "I \\to \\tfrac{I}{4}"
+     ],
+     "size": 72,
+     "at": [
+      0,
+      -0.2
+     ],
+     "colors": {
+      "0": "brown",
+      "2": "blue"
+     }
+    }
+   ]
+  },
+  {
+   "text": "But $L = I\\omega$ has to stay the same. So the spin rate must make up the difference.",
+   "do": [
+    {
+     "indicate": "L",
+     "color": "yellow"
+    },
+    {
+     "sfx": "riser"
+    },
+    {
+     "make": "tex",
+     "name": "w",
+     "tex": [
+      "\\omega",
+      "\\to",
+      "4\\,\\omega"
+     ],
+     "size": 110,
+     "at": [
+      0,
+      -1.9
+     ],
+     "colors": {
+      "0": "teal",
+      "2": "teal"
+     }
+    },
+    {
+     "sfx": "ding"
+    },
+    {
+     "make": "box",
+     "name": "bx",
+     "around": "w"
+    }
+   ]
+  },
+  {
+   "do": [
+    {
+     "clear": true
+    }
+   ]
+  },
+  {
+   "text": "Here's the part people miss: her energy does not stay the same.",
+   "do": [
+    {
+     "make": "tex",
+     "name": "E",
+     "tex": [
+      "E",
+      "=",
+      "\\tfrac12 I\\omega^2",
+      "=",
+      "\\frac{L^2}{2I}"
+     ],
+     "size": 96,
+     "at": [
+      0,
+      3.6
+     ],
+     "colors": {
+      "0": "yellow",
+      "4": "blue"
+     }
+    }
+   ]
+  },
+  {
+   "text": "$L$ is fixed and $I$ is four times smaller, so her kinetic energy goes up four times.",
+   "do": [
+    {
+     "make": "tex",
+     "name": "E4",
+     "tex": [
+      "E",
+      "\\to",
+      "4E"
+     ],
+     "size": 110,
+     "next_to": "E",
+     "buff": 0.9,
+     "colors": {
+      "0": "yellow",
+      "2": "red"
+     }
+    },
+    {
+     "flash": "E4"
+    }
+   ]
+  },
+  {
+   "text": "That energy comes from her muscles. Pulling the arms in against the spin is real work.",
+   "do": [
+    {
+     "make": "text",
+     "name": "mus",
+     "text": "work done by her arms",
+     "size": 60,
+     "color": "green",
+     "bold": true,
+     "next_to": "E4",
+     "buff": 0.6
+    },
+    {
+     "indicate": "E4",
+     "color": "red"
+    }
+   ]
+  },
+  {
+   "do": [
+    {
+     "clear": true
+    }
+   ]
+  },
+  {
+   "text": "The same rule spins collapsing stars into pulsars, some turning hundreds of times a second.",
+   "do": [
+    {
+     "make": "tex",
+     "name": "g",
+     "tex": [
+      "I",
+      "\\downarrow",
+      "\\quad\\Rightarrow\\quad",
+      "\\omega",
+      "\\uparrow"
+     ],
+     "size": 120,
+     "at": [
+      0,
+      2.6
+     ],
+     "colors": {
+      "0": "blue",
+      "1": "blue",
+      "3": "teal",
+      "4": "teal"
+     }
+    }
+   ]
+  }
+ ],
+ "outro": "Follow for more ideas like this.",
+ "post_after": "2026-10-26T03:00:00+05:30",
+ "est_duration": 70,
+ "visual": "equations",
+ "approved": false
+}
