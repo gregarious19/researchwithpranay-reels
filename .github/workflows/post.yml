@@ -1,6 +1,6 @@
 name: Post reel to Instagram
 
-# Five times a day (just after 11:00, 15:00, 19:00, 23:00, 02:00 IST) posts ONE reel: the approved queued reel with the
+# Twelve times a day, every 2 hours (just after 11:00, 13:00 ... 23:00, 01:00 ... 09:00 IST), posts ONE reel: the approved queued reel with the
 # earliest post_after time that has passed. The daily run approves each reel after make.py prints PASS and
 # the contact sheet looks right. Reels left unapproved or on hold never post. If a slot is missed, its reel
 # goes out at the next slot. The slot hours must match SLOTS in make.py.
@@ -8,14 +8,22 @@ name: Post reel to Instagram
 # To pause all posting, add a file named PAUSED at the repo root (delete it to resume).
 on:
   schedule:
-    # Two runs per slot, off the :00/:30 rush where GitHub delays or drops scheduled runs:
-    # slot + 7 min, then a backup at slot + 22 min. A run posts only an approved reel that is due,
+    # Two runs per slot at irregular minutes, off the :00/:30 rush where GitHub delays or drops scheduled runs:
+    # a few minutes after the slot, then a backup ~15 min later. A run posts only an approved reel that is due,
     # so the backup posts a missed reel or does nothing; it can't double-post.
-    - cron: "37,52 5 * * *"    # 11:07 / 11:22 IST
-    - cron: "37,52 9 * * *"    # 15:07 / 15:22 IST
-    - cron: "37,52 13 * * *"   # 19:07 / 19:22 IST
-    - cron: "37,52 17 * * *"   # 23:07 / 23:22 IST
-    - cron: "37,52 20 * * *"   # 02:07 / 02:22 IST
+    # UTC minute must stay 31-59 (IST = UTC+5:30), or the run fires before its slot.
+    - cron: "35,50 5 * * *"    # 11:05 / 11:20 IST
+    - cron: "39,54 7 * * *"    # 13:09 / 13:24 IST
+    - cron: "32,48 9 * * *"    # 15:02 / 15:18 IST
+    - cron: "44,58 11 * * *"   # 17:14 / 17:28 IST
+    - cron: "36,51 13 * * *"   # 19:06 / 19:21 IST
+    - cron: "41,56 15 * * *"   # 21:11 / 21:26 IST
+    - cron: "34,49 17 * * *"   # 23:04 / 23:19 IST
+    - cron: "38,53 19 * * *"   # 01:08 / 01:23 IST
+    - cron: "31,46 21 * * *"   # 03:01 / 03:16 IST
+    - cron: "43,57 23 * * *"   # 05:13 / 05:27 IST
+    - cron: "37,52 1 * * *"    # 07:07 / 07:22 IST
+    - cron: "40,55 3 * * *"    # 09:10 / 09:25 IST
   workflow_dispatch:
     inputs:
       spec:

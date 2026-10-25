@@ -8,7 +8,7 @@ views, hold rate (avg watch time / length), share+save rate and comment rate. Th
 - best and worst reels (with their hooks), to learn from concretely
 - averages by hook type, subject, visual style, length, number of beats and posting slot
   (only reels at least 48 h old count; a group needs 3+ reels before it's called a winner)
-- a plan for today's 5 reels: 4 exploit what works, 1 explores something new (rotating what's tested)
+- a plan for today's 12 reels: 9 exploit what works, 3 explore something new (rotating what's tested)
 """
 import datetime, glob, json, os
 
@@ -146,16 +146,18 @@ def main():
     day = datetime.date.today().toordinal()
     dims = [("hook_type", HOOKS), ("subject", SUBJECTS), ("visual", VISUALS)]
     test_dim, options = dims[day % len(dims)]          # rotate what gets tested
-    explore_slot = SLOTS[day % len(SLOTS)]              # rotate which slot tests
+    explore_slots = {SLOTS[(day + k * 4) % len(SLOTS)] for k in range(3)}  # 3 of 12 test, spread out, rotating
     counts = {o: sum(1 for r in rows if r[test_dim] == o) for o in options}
     untried = sorted(options, key=lambda o: (counts[o], options.index(o)))
     keep = ", ".join(f"{k.replace('_', ' ')} **{v}**" for k, v in best.items() if k in ("hook_type", "visual", "length", "beats"))
     used_subjects = []
     for i, h in enumerate(SLOTS):
-        if best and h != explore_slot:
+        if best and h not in explore_slots:
             print(f"- **{h:02d}:00 IST** — EXPLOIT: keep what works ({keep or 'no winners yet'}); new topic.")
         else:
-            pick = next(o for o in untried if o != best.get(test_dim)) if best else None
+            cands = [o for o in untried if o != best.get(test_dim)] if best else []
+            pick = cands[len(used_subjects) % len(cands)] if cands else None  # a different test per explore slot
+            used_subjects.append(pick)
             if not best:
                 # no winners yet: spread hooks and subjects across the day
                 hook, subj = HOOKS[(day + i) % len(HOOKS)], SUBJECTS[(day + i) % len(SUBJECTS)]
@@ -169,7 +171,7 @@ def main():
         print(f"\nSubjects: **{best['subject']}** works best so far; give it 2 of today's slots and spread the "
               f"rest over other subjects (never all one subject).")
     else:
-        print("\nSubjects: mix them; at least 3 different subjects today.")
+        print("\nSubjects: mix them; at least 5 different subjects today, never two of the same subject in a row.")
     if "slot" in best:
         print(f"\nBest posting slot so far: **{best['slot']}** IST.")
     recent = [r["topic"] for r in rows[-28:] if r["topic"]]

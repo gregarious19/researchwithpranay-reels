@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Check a reel script, set its posting slot, and optionally render a quick local preview.
 
-    python3 make.py <id> [--slot 11|15|19|23] [--preview]
+    python3 make.py <id> [--slot 11|13|15|17|19|21|23|1|3|5|7|9] [--preview]
 
 The script is reels/queue/<id>.json (format: SCRIPT_FORMAT.md). Checks everything that can be checked
 without rendering: fields, steps, component names, references to things on screen, colors, functions,
@@ -13,7 +13,9 @@ real thing after you push.
 """
 import argparse, datetime, glob, json, os, re, subprocess, sys
 
-SLOTS = (11, 15, 19, 23, 2)  # IST posting hours (02:00 is the night after); must match post.yml
+# IST posting hours in posting order: every 2 h from 11:00 to 09:00 the next morning (hours before 11 are the
+# night after the daily run). Must match post.yml.
+SLOTS = (11, 13, 15, 17, 19, 21, 23, 1, 3, 5, 7, 9)
 IST = datetime.timezone(datetime.timedelta(hours=5, minutes=30))
 READ_WPS = 3.0            # must match lib/reel.py
 MIN_S, MAX_S = 28, 90
@@ -215,9 +217,12 @@ def validate(spec, rid):
 
 
 def slot_time(h, now=None):
-    """Next occurrence of posting hour h (IST) that is still ahead."""
+    """This posting day's slot at hour h (IST): 11-23 today, 01-09 the next morning. A slot that has already
+    passed moves to the same hour a day later."""
     now = now or datetime.datetime.now(IST)
     t = datetime.datetime(now.year, now.month, now.day, h, tzinfo=IST)
+    if h < SLOTS[0]:
+        t += datetime.timedelta(days=1)
     return t if t > now else t + datetime.timedelta(days=1)
 
 

@@ -1,7 +1,7 @@
 # Daily run (the scheduled task follows this exactly)
 
-You make 5 reels for @researchwithpranay. They post at 11:00, 15:00, 19:00, 23:00 IST today and 02:00 IST
-tonight (the night after), one per slot. Each reel is a JSON script; the library renders it.
+You make 12 reels for @researchwithpranay. They post every 2 hours, one per slot: 11:00, 13:00, 15:00, 17:00,
+19:00, 21:00, 23:00 IST today, then 01:00, 03:00, 05:00, 07:00, 09:00 IST the next morning. Each reel is a JSON script; the library renders it.
 Never write Manim code for a reel.
 
 1. **Set up.** `./setup_local.sh` (local Manim for previews; ~1 min the first time).
@@ -18,12 +18,14 @@ Never write Manim code for a reel.
    - Read `LEARNINGS.md`, `FEEDBACK.md` (Pranay's notes; they override everything), `TOPICS.md` (requested
      topics go first), `STYLE.md` and `SCRIPT_FORMAT.md` in full.
    - Today's reels follow analyze.py's plan (which hook / visual / length to keep in exploit slots, what to test
-     in the explore slot, how to spread subjects) and the lessons in LEARNINGS.md.
+     in the 3 explore slots, how to spread subjects) and the lessons in LEARNINGS.md.
 
-   `python3 approve.py list`: a slot that already holds a queued reel (approved or not) is taken;
+   `python3 approve.py list`: a slot is taken only if a queued reel (approved or not) already has exactly that
+   slot's posting time ("posts after"). Yesterday's 01:00–09:00 reels still queued this morning are yesterday's batch;
    make reels only for the free slots, and leave existing queued reels alone (Pranay may have put them there).
 
-3. **For each free slot, in order 11 → 15 → 19 → 23 → 02** (have the 11:00 reel approved by ~10:30 IST):
+3. **For each free slot, in order 11 → 13 → 15 → 17 → 19 → 21 → 23 → 01 → 03 → 05 → 07 → 09**
+   (have the 11:00 reel approved by ~10:30 IST and the 13:00 one by ~12:30; script the next reel while a render runs):
    1. Pick a topic per the plan and LEARNINGS.md: not in the last 28 reels; mix subjects across the day.
       Set `hook_type` and `subject` honestly; they are what analyze.py learns from.
    2. Work out the explanation and check every claim. If unsure of a fact, change the angle or topic.
