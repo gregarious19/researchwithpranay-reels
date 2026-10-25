@@ -1,0 +1,251 @@
+{
+ "id": "2026-10-25-half-life-halvings",
+ "topic": "half-life: why 10 half-lives leave about 0.1% of a sample",
+ "subject": "chemistry",
+ "hook_type": "exam pain",
+ "caption": "First-order decay loses the same fraction in every equal stretch of time, so the half-life never depends on how much you start with. Ten halvings leave 1/1024 of the sample: about 0.1%.\n\nSave this for your next kinetics exam.\n\n#chemistry #kinetics #halflife #radioactivity #physics #calculus #stem #science #exams",
+ "cover_at": 1.0,
+ "hook": "How long until 99.9% of a radioactive sample is gone?",
+ "sub": "Count halvings, not seconds.",
+ "beats": [
+  {
+   "text": "Every nucleus has the same small chance of decaying each second. So the decay rate is proportional to what's left.",
+   "do": [
+    {
+     "make": "tex",
+     "name": "e1",
+     "tex": [
+      "\\frac{dN}{dt}",
+      "=",
+      "-k",
+      "N"
+     ],
+     "size": 110,
+     "at": [
+      0,
+      3.4
+     ],
+     "colors": {
+      "0": "yellow",
+      "3": "blue"
+     }
+    }
+   ]
+  },
+  {
+   "text": "Solve that, and the amount left shrinks exponentially.",
+   "do": [
+    {
+     "make": "tex",
+     "name": "e2",
+     "tex": [
+      "N(t)",
+      "=",
+      "N_0",
+      "e^{-kt}"
+     ],
+     "size": 100,
+     "next_to": "e1",
+     "buff": 0.8,
+     "colors": {
+      "0": "blue",
+      "2": "teal"
+     }
+    }
+   ]
+  },
+  {
+   "text": "Now ask: when has it halved? Set $N = N_0/2$.",
+   "do": [
+    {
+     "make": "tex",
+     "name": "e3",
+     "tex": [
+      "\\tfrac{1}{2}",
+      "N_0",
+      "=",
+      "N_0",
+      "e^{-k t_{1/2}}"
+     ],
+     "size": 92,
+     "next_to": "e2",
+     "buff": 0.8,
+     "colors": {
+      "1": "teal",
+      "3": "teal"
+     }
+    }
+   ]
+  },
+  {
+   "text": "Notice that $N_0$ cancels. The half-life doesn't care how much you start with.",
+   "do": [
+    {
+     "indicate": "e3",
+     "color": "teal"
+    },
+    {
+     "hide": "e3",
+     "time": 0.4
+    },
+    {
+     "make": "tex",
+     "tex": [
+      "t_{1/2}",
+      "=",
+      "\\frac{\\ln 2}{k}"
+     ],
+     "size": 100,
+     "colors": {
+      "0": "yellow"
+     },
+     "next_to": "e2",
+     "buff": 0.8,
+     "name": "e4"
+    },
+    {
+     "circle": "e4"
+    }
+   ]
+  },
+  {
+   "do": [
+    {
+     "clear": true
+    }
+   ]
+  },
+  {
+   "text": "So every half-life does the same thing: it cuts whatever remains in half.",
+   "do": [
+    {
+     "make": "text",
+     "name": "ttl",
+     "text": "% of the sample left",
+     "size": 52,
+     "color": "dim",
+     "at": [
+      0,
+      5.6
+     ]
+    },
+    {
+     "make": "bars",
+     "name": "br",
+     "values": [
+      100,
+      50,
+      25,
+      12.5,
+      6.25,
+      3.125
+     ],
+     "labels": [
+      "0",
+      "1",
+      "2",
+      "3",
+      "4",
+      "5"
+     ],
+     "colors": [
+      "blue"
+     ],
+     "max": 100,
+     "step": 25,
+     "size": [
+      7.2,
+      4.0
+     ],
+     "at": [
+      0,
+      3.1
+     ]
+    },
+    {
+     "make": "text",
+     "name": "xl",
+     "text": "half-lives",
+     "size": 48,
+     "color": "dim",
+     "next_to": "br",
+     "buff": 0.25
+    }
+   ]
+  },
+  {
+   "text": "Fifty, twenty-five, twelve and a half... After ten halvings, you're left with one part in 1024.",
+   "do": [
+    {
+     "make": "tex",
+     "name": "f1",
+     "tex": [
+      "\\left(\\tfrac{1}{2}\\right)^{10}",
+      "=",
+      "\\frac{1}{1024}"
+     ],
+     "size": 88,
+     "at": [
+      0,
+      -0.9
+     ],
+     "colors": {
+      "0": "yellow"
+     }
+    }
+   ]
+  },
+  {
+   "text": "That's about 0.1% left. So 99.9% is gone after roughly ten half-lives.",
+   "do": [
+    {
+     "sfx": "riser"
+    },
+    {
+     "make": "tex",
+     "name": "f2",
+     "tex": [
+      "10",
+      "\\text{ half-lives}",
+      "\\quad\\Rightarrow\\quad",
+      "99.9\\%",
+      "\\text{ gone}"
+     ],
+     "size": 54,
+     "colors": {
+      "0": "yellow",
+      "3": "green"
+     },
+     "next_to": "f1",
+     "buff": 0.45
+    },
+    {
+     "sfx": "ding"
+    },
+    {
+     "make": "box",
+     "name": "bx",
+     "around": "f2"
+    }
+   ]
+  },
+  {
+   "text": "Same trick for any first-order process: seven halvings is about 1%, twenty is about one in a million.",
+   "do": [
+    {
+     "hide": "bx",
+     "time": 0.3
+    },
+    {
+     "indicate": "f1",
+     "color": "yellow"
+    }
+   ]
+  }
+ ],
+ "outro": "Follow for more ideas like this.",
+ "post_after": "2026-10-25T17:00:00+05:30",
+ "est_duration": 56,
+ "visual": "data",
+ "approved": false
+}
