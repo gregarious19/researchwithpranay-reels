@@ -4,6 +4,7 @@ name: Post reel to Instagram
 # earliest post_after time that has passed. The daily run approves each reel after make.py prints PASS and
 # the contact sheet looks right. Reels left unapproved or on hold never post. If a slot is missed, its reel
 # goes out at the next slot. The slot hours must match SLOTS in make.py.
+# Never commit changes to this file with [skip ci]: GitHub then may not register the schedule.
 # To pause all posting, add a file named PAUSED at the repo root (delete it to resume).
 on:
   schedule:

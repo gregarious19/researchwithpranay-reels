@@ -6,7 +6,9 @@ Never write Manim code for a reel.
 
 1. **Set up.** `./setup_local.sh` (local Manim for previews; ~1 min the first time).
    `git pull`, then check `data/insights.json` was updated today (insights.yml pulls it at 07:00 IST).
-   If not, pull again every 2 minutes for up to 10 minutes, then carry on and mention it in your report.
+   If not, start it yourself with the GitHub MCP tool `actions_run_trigger` (method `run_workflow`,
+   workflow `insights.yml`, ref `main`), wait for that run to finish, `git pull`, and check again.
+   If it still isn't there, carry on and mention it in your report.
 
 2. **Learn from the past.** `python3 analyze.py` and read all of it. Never estimate numbers yourself.
    - Open the scripts of the best and worst reels it lists (`reels/posted/<id>.json`) and compare them:
