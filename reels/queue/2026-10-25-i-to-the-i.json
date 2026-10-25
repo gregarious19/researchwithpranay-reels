@@ -1,0 +1,305 @@
+{
+ "id": "2026-10-25-i-to-the-i",
+ "topic": "why i^i is a real number",
+ "subject": "math",
+ "hook_type": "curiosity jump",
+ "caption": "Write i as e^(iπ/2) and raise it to the power i: the two i's multiply to −1 and leave e^(−π/2) ≈ 0.2079, a plain real number. Every other value of i^i is real too.\n\nSave this for the next time someone says imaginary numbers aren't real.\n\n#math #complexnumbers #eulersformula #mathematics #calculus #stem #learnmath #science",
+ "cover_at": 1.0,
+ "hook": "i raised to the power i is a real number.",
+ "sub": "Not imaginary. About 0.2079.",
+ "beats": [
+  {
+   "text": "Remember $i$: the number whose square is $-1$.",
+   "do": [
+    {
+     "make": "tex",
+     "name": "def",
+     "tex": [
+      "i",
+      "^2",
+      "=",
+      "-1"
+     ],
+     "size": 120,
+     "at": [
+      0,
+      3.2
+     ],
+     "colors": {
+      "0": "blue"
+     }
+    }
+   ]
+  },
+  {
+   "text": "Raising $i$ to an imaginary power sounds like it should give something even stranger.",
+   "do": [
+    {
+     "make": "tex",
+     "name": "q",
+     "tex": [
+      "i",
+      "^{i}",
+      "=",
+      "\\,?"
+     ],
+     "size": 130,
+     "at": [
+      0,
+      0.6
+     ],
+     "colors": {
+      "0": "blue",
+      "1": "yellow",
+      "3": "red"
+     }
+    }
+   ]
+  },
+  {
+   "do": [
+    {
+     "clear": true
+    }
+   ]
+  },
+  {
+   "text": "The key is Euler's formula: $e^{i\\theta}$ is the point at angle $\\theta$ on the unit circle.",
+   "do": [
+    {
+     "make": "tex",
+     "name": "eu",
+     "tex": [
+      "e^{i\\theta}",
+      "=",
+      "\\cos\\theta",
+      "+",
+      "i\\sin\\theta"
+     ],
+     "size": 90,
+     "at": [
+      0,
+      3.6
+     ],
+     "colors": {
+      "0": "yellow"
+     }
+    }
+   ]
+  },
+  {
+   "text": "Take a quarter turn, $\\theta = \\pi/2$. The cosine is 0 and the sine is 1.",
+   "do": [
+    {
+     "make": "tex",
+     "name": "qt",
+     "tex": [
+      "e^{i\\pi/2}",
+      "=",
+      "0",
+      "+",
+      "i\\cdot 1"
+     ],
+     "size": 90,
+     "next_to": "eu",
+     "side": "down",
+     "buff": 0.7,
+     "colors": {
+      "0": "yellow"
+     }
+    }
+   ]
+  },
+  {
+   "text": "So $i$ itself can be written as $e^{i\\pi/2}$.",
+   "do": [
+    {
+     "make": "tex",
+     "name": "key",
+     "tex": [
+      "i",
+      "=",
+      "e^{i\\pi/2}"
+     ],
+     "size": 120,
+     "next_to": "qt",
+     "side": "down",
+     "buff": 0.9,
+     "colors": {
+      "0": "blue",
+      "2": "yellow"
+     }
+    },
+    {
+     "make": "box",
+     "name": "bk",
+     "around": "key",
+     "color": "yellow"
+    }
+   ]
+  },
+  {
+   "do": [
+    {
+     "hide": [
+      "eu",
+      "qt",
+      "bk"
+     ]
+    },
+    {
+     "move": "key",
+     "to": [
+      0,
+      4.9
+     ],
+     "scale": 0.7
+    }
+   ]
+  },
+  {
+   "text": "Now raise both sides to the power $i$.",
+   "do": [
+    {
+     "make": "tex",
+     "name": "s1",
+     "tex": [
+      "i^{i}",
+      "=",
+      "\\left(e^{i\\pi/2}\\right)^{i}"
+     ],
+     "size": 110,
+     "at": [
+      0,
+      2.6
+     ],
+     "colors": {
+      "0": "blue"
+     }
+    }
+   ]
+  },
+  {
+   "text": "Exponents multiply, and $i \\cdot i = -1$. Watch the $i$'s cancel out of the exponent.",
+   "do": [
+    {
+     "make": "tex",
+     "name": "s2",
+     "tex": [
+      "=",
+      "e^{i\\cdot i\\cdot\\pi/2}"
+     ],
+     "size": 110,
+     "next_to": "s1",
+     "side": "down",
+     "buff": 0.6
+    },
+    {
+     "sfx": "riser"
+    },
+    {
+     "morph": "s2",
+     "into": {
+      "make": "tex",
+      "tex": [
+       "=",
+       "e^{-\\pi/2}"
+      ],
+      "size": 110,
+      "next_to": "s1",
+      "side": "down",
+      "buff": 0.6
+     }
+    }
+   ]
+  },
+  {
+   "text": "No $i$ left anywhere. It's $e^{-\\pi/2}$, roughly 0.2079: an ordinary real number.",
+   "do": [
+    {
+     "make": "tex",
+     "name": "ans",
+     "tex": [
+      "i^{i}",
+      "\\approx",
+      "0.2079"
+     ],
+     "size": 130,
+     "at": [
+      0,
+      -1.6
+     ],
+     "colors": {
+      "0": "blue",
+      "2": "green"
+     }
+    },
+    {
+     "sfx": "ding"
+    },
+    {
+     "make": "box",
+     "name": "ba",
+     "around": "ans",
+     "color": "green"
+    }
+   ]
+  },
+  {
+   "do": [
+    {
+     "clear": true
+    }
+   ]
+  },
+  {
+   "text": "Strictly, $i$ is also $e^{i(\\pi/2 + 2\\pi k)}$ for any whole number $k$, so $i^i$ has infinitely many values.",
+   "do": [
+    {
+     "make": "tex",
+     "name": "all",
+     "tex": [
+      "i^{i}",
+      "=",
+      "e^{-\\pi/2 \\,-\\, 2\\pi k}"
+     ],
+     "size": 110,
+     "at": [
+      0,
+      2.4
+     ],
+     "colors": {
+      "0": "blue"
+     }
+    }
+   ]
+  },
+  {
+   "text": "And every single one of them is real.",
+   "do": [
+    {
+     "make": "text",
+     "name": "real",
+     "text": "all real",
+     "size": 72,
+     "color": "green",
+     "next_to": "all",
+     "side": "down",
+     "buff": 0.8
+    },
+    {
+     "flash": "all"
+    },
+    {
+     "indicate": "all",
+     "color": "green"
+    }
+   ]
+  }
+ ],
+ "outro": "Follow for more ideas like this.",
+ "post_after": "2026-10-25T11:00:00+05:30",
+ "est_duration": 64,
+ "visual": "equations",
+ "approved": false
+}
