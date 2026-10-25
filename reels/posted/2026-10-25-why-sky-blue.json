@@ -271,5 +271,11 @@
  "post_after": "2026-10-25T15:00:00+05:30",
  "est_duration": 67,
  "visual": "data",
- "approved": true
+ "approved": true,
+ "posted": {
+  "media_id": "18464822644185846",
+  "permalink": "https://www.instagram.com/reel/De6wAwdgqfB/",
+  "timestamp": "2026-10-25T12:52:47+0000",
+  "video_url": "https://github.com/gregarious19/researchwithpranay-reels/releases/download/reel-2026-10-25-why-sky-blue/2026-10-25-why-sky-blue.mp4"
+ }
 }
