@@ -1,0 +1,275 @@
+{
+ "id": "2026-10-25-why-sky-blue",
+ "topic": "why the sky is blue (Rayleigh scattering, 1/λ⁴)",
+ "subject": "physics",
+ "hook_type": "everyday mystery",
+ "caption": "Air molecules scatter light in proportion to 1/λ⁴, so blue light (450 nm) scatters about 5.9 times more than red (700 nm). That scattered blue reaches you from every direction, and at sunset the long path through air strips it away.\n\nSend this to the friend who asked why the sky is blue.\n\n#physics #science #optics #rayleighscattering #light #stem #sky #learnphysics",
+ "cover_at": 1.0,
+ "hook": "Why is the sky blue and not white?",
+ "sub": "The answer is a fourth power.",
+ "beats": [
+  {
+   "text": "Sunlight is a mix of every color, and air molecules are over a thousand times smaller than its wavelength.",
+   "do": [
+    {
+     "make": "tex",
+     "name": "sz",
+     "tex": [
+      "d_{\\text{air molecule}}",
+      "\\approx",
+      "0.3\\,\\text{nm}"
+     ],
+     "size": 72,
+     "at": [
+      0,
+      5.0
+     ],
+     "colors": {
+      "0": "teal"
+     }
+    },
+    {
+     "make": "tex",
+     "name": "wl",
+     "tex": [
+      "\\lambda_{\\text{light}}",
+      "\\approx",
+      "400\\text{--}700\\,\\text{nm}"
+     ],
+     "size": 72,
+     "next_to": "sz",
+     "side": "down",
+     "buff": 0.4,
+     "colors": {
+      "0": "yellow"
+     }
+    }
+   ]
+  },
+  {
+   "text": "For particles that small, Lord Rayleigh worked out how strongly light gets scattered:",
+   "do": [
+    {
+     "make": "tex",
+     "name": "ray",
+     "tex": [
+      "I_{\\text{scattered}}",
+      "\\propto",
+      "\\frac{1}{\\lambda^4}"
+     ],
+     "size": 120,
+     "colors": {
+      "0": "blue",
+      "2": "yellow"
+     },
+     "at": [
+      0,
+      2.2
+     ]
+    }
+   ]
+  },
+  {
+   "text": "Notice the fourth power. A small change in wavelength becomes a big change in scattering.",
+   "do": [
+    {
+     "circle": "ray"
+    },
+    {
+     "indicate": "ray",
+     "color": "yellow"
+    }
+   ]
+  },
+  {
+   "text": "Compare blue light at 450 nm with red light at 700 nm.",
+   "do": [
+    {
+     "make": "tex",
+     "name": "ratio",
+     "tex": [
+      "\\left(\\frac{700}{450}\\right)^{4}",
+      "\\approx",
+      "5.9"
+     ],
+     "size": 90,
+     "colors": {
+      "2": "blue"
+     },
+     "at": [
+      0,
+      -0.6
+     ]
+    }
+   ]
+  },
+  {
+   "do": [
+    {
+     "hide": [
+      "sz",
+      "wl",
+      "ray"
+     ]
+    },
+    {
+     "move": "ratio",
+     "to": [
+      1.9,
+      4.8
+     ],
+     "scale": 0.6
+    }
+   ]
+  },
+  {
+   "text": "Here is how much each color scatters, relative to red.",
+   "do": [
+    {
+     "sfx": "riser"
+    },
+    {
+     "make": "bars",
+     "name": "bars",
+     "values": [
+      9.38,
+      5.86,
+      2.62,
+      1.0
+     ],
+     "labels": [
+      "violet",
+      "blue",
+      "green",
+      "red"
+     ],
+     "colors": [
+      "purple",
+      "blue",
+      "green",
+      "red"
+     ],
+     "max": 10,
+     "step": 2,
+     "size": [
+      7.0,
+      5.6
+     ],
+     "at": [
+      0,
+      0.8
+     ]
+    }
+   ]
+  },
+  {
+   "text": "Blue scatters almost six times more than red, so it bounces around and reaches you from every direction.",
+   "do": [
+    {
+     "sfx": "ding"
+    },
+    {
+     "make": "box",
+     "name": "bxr",
+     "around": "ratio",
+     "color": "blue"
+    },
+    {
+     "indicate": "bars",
+     "color": "blue"
+    }
+   ]
+  },
+  {
+   "text": "Violet scatters even more, but sunlight carries less of it and our eyes are far less sensitive to it.",
+   "do": [
+    {
+     "make": "text",
+     "name": "pv",
+     "text": "less in sunlight",
+     "size": 44,
+     "color": "purple",
+     "at": [
+      -1.9,
+      4.8
+     ]
+    },
+    {
+     "indicate": "pv",
+     "color": "purple"
+    }
+   ]
+  },
+  {
+   "do": [
+    {
+     "clear": true
+    }
+   ]
+  },
+  {
+   "text": "At sunset, light crosses far more air to reach you, and the blue is scattered out along the way.",
+   "do": [
+    {
+     "make": "tex",
+     "name": "sun",
+     "tex": [
+      "\\text{longer path}",
+      "\\Rightarrow",
+      "\\text{less blue}"
+     ],
+     "size": 76,
+     "at": [
+      0,
+      3.0
+     ],
+     "colors": {
+      "0": "yellow",
+      "2": "blue"
+     }
+    },
+    {
+     "make": "text",
+     "name": "left",
+     "text": "reds and oranges remain",
+     "size": 60,
+     "color": "orange",
+     "next_to": "sun",
+     "side": "down",
+     "buff": 0.9
+    }
+   ]
+  },
+  {
+   "text": "Blue days and red sunsets: one exponent paints both.",
+   "do": [
+    {
+     "make": "tex",
+     "name": "end",
+     "tex": [
+      "I \\propto \\lambda^{-4}"
+     ],
+     "size": 120,
+     "next_to": "left",
+     "side": "down",
+     "buff": 1.0,
+     "colors": {
+      "0": "yellow"
+     },
+     "time": 1.2
+    },
+    {
+     "flash": "end"
+    },
+    {
+     "wait": 1.5
+    }
+   ]
+  }
+ ],
+ "outro": "Follow for more ideas like this.",
+ "post_after": "2026-10-25T15:00:00+05:30",
+ "est_duration": 67,
+ "visual": "data",
+ "approved": false
+}
