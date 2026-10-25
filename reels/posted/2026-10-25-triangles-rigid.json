@@ -422,5 +422,11 @@
  "post_after": "2026-10-25T19:00:00+05:30",
  "est_duration": 69,
  "visual": "geometry",
- "approved": true
+ "approved": true,
+ "posted": {
+  "media_id": "18076986656718386",
+  "permalink": "https://www.instagram.com/reel/De63DhGjDSP/",
+  "timestamp": "2026-10-25T13:54:07+0000",
+  "video_url": "https://github.com/gregarious19/researchwithpranay-reels/releases/download/reel-2026-10-25-triangles-rigid/2026-10-25-triangles-rigid.mp4"
+ }
 }
