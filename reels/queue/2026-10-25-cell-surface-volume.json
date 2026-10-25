@@ -1,0 +1,380 @@
+{
+ "id": "2026-10-25-cell-surface-volume",
+ "topic": "why cells are small: surface-to-volume ratio A/V = 3/r",
+ "subject": "biology",
+ "hook_type": "what it really means",
+ "caption": "A cell is fed through its surface but burns fuel throughout its volume. For a sphere A/V = 3/r, so doubling the radius gives each bit of the inside half as much membrane. That's why cells stay tiny and why lungs and guts fold into huge surfaces.\n\nSave this for your biology course.\n\n#biology #cellbiology #math #geometry #science #stem #physiology #learnscience",
+ "cover_at": 1.0,
+ "hook": "What does \"surface-to-volume ratio\" really mean for a living cell?",
+ "sub": "It's why your cells are tiny.",
+ "beats": [
+  {
+   "text": "A cell is fed through its skin. Food and oxygen cross the membrane, so supply grows with surface area.",
+   "do": [
+    {
+     "make": "shape",
+     "name": "cell",
+     "kind": "circle",
+     "radius": 1.2,
+     "center": [
+      0,
+      2.4
+     ],
+     "color": "blue"
+    },
+    {
+     "together": [
+      {
+       "make": "vector",
+       "name": "a1",
+       "from": [
+        1.82,
+        3.45
+       ],
+       "to": [
+        1.21,
+        3.1
+       ],
+       "color": "yellow",
+       "width": 6
+      },
+      {
+       "make": "vector",
+       "name": "a2",
+       "from": [
+        0,
+        4.5
+       ],
+       "to": [
+        0,
+        3.8
+       ],
+       "color": "yellow",
+       "width": 6
+      },
+      {
+       "make": "vector",
+       "name": "a3",
+       "from": [
+        -1.82,
+        3.45
+       ],
+       "to": [
+        -1.21,
+        3.1
+       ],
+       "color": "yellow",
+       "width": 6
+      },
+      {
+       "make": "vector",
+       "name": "a4",
+       "from": [
+        -1.82,
+        1.35
+       ],
+       "to": [
+        -1.21,
+        1.7
+       ],
+       "color": "yellow",
+       "width": 6
+      },
+      {
+       "make": "vector",
+       "name": "a5",
+       "from": [
+        0,
+        0.3
+       ],
+       "to": [
+        0,
+        1.0
+       ],
+       "color": "yellow",
+       "width": 6
+      },
+      {
+       "make": "vector",
+       "name": "a6",
+       "from": [
+        1.82,
+        1.35
+       ],
+       "to": [
+        1.21,
+        1.7
+       ],
+       "color": "yellow",
+       "width": 6
+      }
+     ],
+     "lag": 0.15
+    }
+   ]
+  },
+  {
+   "text": "But every bit of the inside burns that fuel, so demand grows with volume.",
+   "do": [
+    {
+     "make": "shape",
+     "name": "inside",
+     "kind": "circle",
+     "radius": 1.15,
+     "center": [
+      0,
+      2.4
+     ],
+     "color": "teal",
+     "fill": 0.35
+    }
+   ]
+  },
+  {
+   "text": "For a sphere of radius $r$, here are the two quantities.",
+   "do": [
+    {
+     "make": "tex",
+     "name": "A",
+     "tex": [
+      "A",
+      "=",
+      "4\\pi r^2"
+     ],
+     "size": 84,
+     "at": [
+      0,
+      -0.4
+     ],
+     "colors": {
+      "0": "yellow"
+     }
+    },
+    {
+     "make": "tex",
+     "name": "V",
+     "tex": [
+      "V",
+      "=",
+      "\\tfrac{4}{3}\\pi r^3"
+     ],
+     "size": 84,
+     "next_to": "A",
+     "buff": 0.4,
+     "colors": {
+      "0": "teal"
+     }
+    }
+   ]
+  },
+  {
+   "text": "Divide them, and almost everything cancels. Supply per unit of demand is just $3/r$.",
+   "do": [
+    {
+     "hide": [
+      "A",
+      "V"
+     ],
+     "time": 0.4
+    },
+    {
+     "make": "tex",
+     "name": "ratio",
+     "tex": [
+      "\\frac{A}{V}",
+      "=",
+      "\\frac{3}{r}"
+     ],
+     "size": 110,
+     "at": [
+      0,
+      -1.0
+     ],
+     "colors": {
+      "0": "yellow",
+      "2": "blue"
+     }
+    },
+    {
+     "circle": "ratio"
+    }
+   ]
+  },
+  {
+   "do": [
+    {
+     "clear": true
+    }
+   ]
+  },
+  {
+   "text": "Now double the radius. The surface grows four times, but the volume grows eight times.",
+   "do": [
+    {
+     "make": "shape",
+     "name": "s1",
+     "kind": "circle",
+     "radius": 0.8,
+     "center": [
+      -2.3,
+      3.0
+     ],
+     "color": "blue",
+     "fill": 0.3
+    },
+    {
+     "make": "shape",
+     "name": "s2",
+     "kind": "circle",
+     "radius": 1.6,
+     "center": [
+      1.5,
+      3.0
+     ],
+     "color": "blue",
+     "fill": 0.3
+    },
+    {
+     "make": "tex",
+     "name": "r1",
+     "tex": "r",
+     "size": 64,
+     "next_to": "s1",
+     "buff": 0.3
+    },
+    {
+     "make": "tex",
+     "name": "r2",
+     "tex": "2r",
+     "size": 64,
+     "next_to": "s2",
+     "buff": 0.3
+    },
+    {
+     "make": "tex",
+     "name": "m1",
+     "tex": [
+      "A",
+      "\\times 4",
+      "\\qquad",
+      "V",
+      "\\times 8"
+     ],
+     "size": 80,
+     "at": [
+      0,
+      -0.2
+     ],
+     "colors": {
+      "0": "yellow",
+      "1": "yellow",
+      "3": "teal",
+      "4": "teal"
+     }
+    }
+   ]
+  },
+  {
+   "text": "So each bit of the inside gets only half as much membrane. Keep growing, and the middle starves.",
+   "do": [
+    {
+     "sfx": "riser"
+    },
+    {
+     "make": "tex",
+     "name": "half",
+     "tex": [
+      "\\frac{A}{V}",
+      ":",
+      "\\ \\frac{3}{r}",
+      "\\ \\to\\ ",
+      "\\frac{3}{2r}"
+     ],
+     "size": 90,
+     "next_to": "m1",
+     "buff": 0.6,
+     "colors": {
+      "0": "yellow",
+      "4": "red"
+     }
+    },
+    {
+     "sfx": "ding"
+    },
+    {
+     "make": "box",
+     "name": "bx",
+     "around": "half"
+    },
+    {
+     "recolor": "s2",
+     "color": "red"
+    }
+   ]
+  },
+  {
+   "text": "That's the real meaning of the ratio: it caps how big a cell can be before diffusion can't keep up.",
+   "do": [
+    {
+     "hide": "bx",
+     "time": 0.3
+    },
+    {
+     "indicate": "s1",
+     "color": "green"
+    },
+    {
+     "wiggle": "s2"
+    }
+   ]
+  },
+  {
+   "do": [
+    {
+     "clear": true
+    }
+   ]
+  },
+  {
+   "text": "Big bodies get around it by folding surface into a small space: lungs, gills and the lining of your gut.",
+   "do": [
+    {
+     "make": "text",
+     "name": "g1",
+     "text": "small volume",
+     "size": 70,
+     "color": "teal",
+     "bold": true,
+     "at": [
+      0,
+      3.2
+     ]
+    },
+    {
+     "make": "text",
+     "name": "g2",
+     "text": "+",
+     "size": 80,
+     "color": "white",
+     "next_to": "g1",
+     "buff": 0.3
+    },
+    {
+     "make": "text",
+     "name": "g3",
+     "text": "huge folded surface",
+     "size": 70,
+     "color": "yellow",
+     "bold": true,
+     "next_to": "g2",
+     "buff": 0.3
+    }
+   ]
+  }
+ ],
+ "outro": "Follow for more ideas like this.",
+ "post_after": "2026-10-26T01:00:00+05:30",
+ "est_duration": 64,
+ "visual": "geometry",
+ "approved": false
+}
