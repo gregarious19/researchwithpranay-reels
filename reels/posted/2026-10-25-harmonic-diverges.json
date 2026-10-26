@@ -342,5 +342,11 @@
  "post_after": "2026-10-26T15:00:00+05:30",
  "est_duration": 69,
  "visual": "graph",
- "approved": true
+ "approved": true,
+ "posted": {
+  "media_id": "17991690998861635",
+  "permalink": "https://www.instagram.com/reel/De9LYLekWHf/",
+  "timestamp": "2026-10-26T11:30:26+0000",
+  "video_url": "https://github.com/gregarious19/researchwithpranay-reels/releases/download/reel-2026-10-25-harmonic-diverges/2026-10-25-harmonic-diverges.mp4"
+ }
 }
