@@ -287,5 +287,11 @@
  "post_after": "2026-10-27T02:00:00+05:30",
  "est_duration": 69,
  "visual": "data",
- "approved": true
+ "approved": true,
+ "posted": {
+  "media_id": "18098839475553766",
+  "permalink": "https://www.instagram.com/reel/De-SOXXAFbm/",
+  "timestamp": "2026-10-26T21:49:24+0000",
+  "video_url": "https://github.com/gregarious19/researchwithpranay-reels/releases/download/reel-2026-10-26-ph-dilute-acid/2026-10-26-ph-dilute-acid.mp4"
+ }
 }
