@@ -1,0 +1,299 @@
+{
+ "id": "2026-10-26-binary-search-thirty",
+ "topic": "binary search: a billion numbers need only 30 guesses (log2)",
+ "subject": "computing",
+ "hook_type": "wrong-answer reveal",
+ "caption": "Each guess halves the remaining numbers, so n numbers need about log2(n) guesses. A billion is between 2^29 and 2^30, so thirty guesses always suffice and twenty-nine cannot. A thousand times more data adds only about ten guesses.\n\nSave this for your next algorithms interview.\n\n#computerscience #algorithms #binarysearch #programming #math #logarithm #coding #stem #softwareengineering",
+ "cover_at": 1.0,
+ "hook": "Guess a number from 1 to a billion. How many tries?",
+ "sub": "Thirty is enough, every time.",
+ "beats": [
+  {
+   "text": "I'm thinking of a whole number from 1 to 1,000,000,000. After each guess, I only say higher or lower.",
+   "do": [
+    {
+     "make": "tex",
+     "name": "rg",
+     "tex": "1\\;\\ldots\\;1{,}000{,}000{,}000",
+     "size": 60,
+     "at": [
+      0,
+      4.0
+     ]
+    },
+    {
+     "make": "shape",
+     "name": "r1",
+     "kind": "rect",
+     "w": 6.4,
+     "h": 0.6,
+     "center": [
+      0,
+      2.6
+     ],
+     "color": "blue",
+     "fill": 0.5
+    }
+   ]
+  },
+  {
+   "text": "Guess the middle. Whatever I answer, half of the numbers are gone.",
+   "do": [
+    {
+     "make": "shape",
+     "name": "r2",
+     "kind": "rect",
+     "w": 3.2,
+     "h": 0.6,
+     "center": [
+      -1.6,
+      1.7
+     ],
+     "color": "teal",
+     "fill": 0.5
+    }
+   ]
+  },
+  {
+   "text": "Again: a quarter left. Again: an eighth. Every guess halves what remains.",
+   "do": [
+    {
+     "make": "shape",
+     "name": "r3",
+     "kind": "rect",
+     "w": 1.6,
+     "h": 0.6,
+     "center": [
+      -2.4,
+      0.8
+     ],
+     "color": "yellow",
+     "fill": 0.5
+    },
+    {
+     "make": "shape",
+     "name": "r4",
+     "kind": "rect",
+     "w": 0.8,
+     "h": 0.6,
+     "center": [
+      -2.8,
+      -0.1
+     ],
+     "color": "green",
+     "fill": 0.5
+    }
+   ]
+  },
+  {
+   "text": "After $k$ guesses, about $10^9 / 2^k$ numbers remain. We're done when that gets down to one.",
+   "do": [
+    {
+     "make": "tex",
+     "name": "eq",
+     "tex": [
+      "\\frac{10^9}{2^k}",
+      "\\approx",
+      "1"
+     ],
+     "size": 96,
+     "at": [
+      0,
+      -1.6
+     ],
+     "colors": {
+      "0": "yellow"
+     }
+    }
+   ]
+  },
+  {
+   "do": [
+    {
+     "clear": true
+    }
+   ]
+  },
+  {
+   "text": "Let's plot the guesses needed, $k$, against the size of the range, $n$.",
+   "do": [
+    {
+     "make": "axes",
+     "name": "ax",
+     "x": [
+      0,
+      1024,
+      256
+     ],
+     "y": [
+      0,
+      10,
+      2
+     ],
+     "size": [
+      7.0,
+      5.0
+     ],
+     "at": [
+      0,
+      0.8
+     ],
+     "labels": [
+      "n",
+      "k"
+     ]
+    },
+    {
+     "make": "graph",
+     "name": "g",
+     "on": "ax",
+     "fn": "ln(x)/ln(2)",
+     "x": [
+      1,
+      1024
+     ],
+     "color": "blue"
+    },
+    {
+     "make": "tracker",
+     "name": "t",
+     "value": 1
+    },
+    {
+     "make": "dot",
+     "name": "p",
+     "follow": "g",
+     "x": "t",
+     "color": "yellow"
+    },
+    {
+     "make": "readout",
+     "name": "ro",
+     "tracker": "t",
+     "fn": "ln(x)/ln(2)",
+     "label": "\\log_2 n =",
+     "decimals": 1,
+     "at": [
+      0,
+      4.9
+     ],
+     "color": "yellow"
+    }
+   ]
+  },
+  {
+   "text": "Double the range and you add just one guess. Watch it climb, then flatten.",
+   "do": [
+    {
+     "sfx": "whoosh"
+    },
+    {
+     "slide": "t",
+     "to": 1024,
+     "time": 3.5
+    }
+   ]
+  },
+  {
+   "do": [
+    {
+     "clear": true
+    }
+   ]
+  },
+  {
+   "text": "A billion sits between $2^{29}$ and $2^{30}$. Twenty-nine guesses can't separate every number. Thirty can.",
+   "do": [
+    {
+     "make": "tex",
+     "name": "a1",
+     "tex": [
+      "2^{29}",
+      "=",
+      "536{,}870{,}912",
+      "<",
+      "10^9"
+     ],
+     "size": 52,
+     "at": [
+      0,
+      3.6
+     ],
+     "colors": {
+      "2": "red"
+     }
+    },
+    {
+     "sfx": "riser"
+    },
+    {
+     "make": "tex",
+     "name": "a2",
+     "tex": [
+      "2^{30}",
+      "=",
+      "1{,}073{,}741{,}824",
+      ">",
+      "10^9"
+     ],
+     "size": 52,
+     "next_to": "a1",
+     "buff": 0.7,
+     "colors": {
+      "2": "green"
+     }
+    },
+    {
+     "sfx": "ding"
+    },
+    {
+     "make": "box",
+     "name": "bx",
+     "around": "a2",
+     "color": "green"
+    }
+   ]
+  },
+  {
+   "text": "So thirty guesses always find it. A thousand times more numbers costs only about ten more.",
+   "do": [
+    {
+     "hide": "bx"
+    },
+    {
+     "make": "tex",
+     "name": "fin",
+     "tex": [
+      "30",
+      "\\text{ guesses for }",
+      "10^9"
+     ],
+     "size": 56,
+     "at": [
+      0,
+      0.6
+     ],
+     "colors": {
+      "0": "yellow"
+     }
+    },
+    {
+     "make": "tex",
+     "name": "fin2",
+     "tex": [
+      "40",
+      "\\text{ guesses for }",
+      "10^{12}"
+     ],
+     "size": 56,
+     "next_to": "fin",
+     "buff": 0.5,
+     "colors": {
+      "0": "green"
+     }
+    }
+   ]
+  }
+ ],
+ "outro": "Follow for more ideas like this."
+}

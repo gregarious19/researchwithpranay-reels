@@ -1,0 +1,347 @@
+{
+ "id": "2026-10-26-simpsons-paradox",
+ "topic": "Simpson's paradox: kidney stone treatments (weighted averages)",
+ "subject": "statistics",
+ "hook_type": "visual surprise",
+ "caption": "Treatment A beats B for small stones (93% vs 87%) and for large stones (73% vs 69%), yet B wins overall (83% vs 78%). Overall rate is a weighted average, and A was given mostly to the harder large-stone cases. Data from Charig et al., 1986.\n\nSave this before you trust your next average.\n\n#statistics #simpsonsparadox #datascience #probability #math #stem #dataanalysis #research",
+ "cover_at": 1.0,
+ "hook": "A treatment can win in every group and still lose overall.",
+ "sub": "Real kidney stone data.",
+ "beats": [
+  {
+   "text": "A 1986 study compared two kidney stone treatments. First, patients with small stones: the success rates.",
+   "do": [
+    {
+     "make": "tex",
+     "name": "sm",
+     "tex": [
+      "\\text{small stones}"
+     ],
+     "size": 48,
+     "color": "dim",
+     "at": [
+      0,
+      5.6
+     ]
+    },
+    {
+     "make": "tex",
+     "name": "a1",
+     "tex": [
+      "A:",
+      "\\tfrac{81}{87}",
+      "=",
+      "93\\%"
+     ],
+     "size": 64,
+     "at": [
+      0,
+      4.6
+     ],
+     "colors": {
+      "0": "blue",
+      "3": "blue"
+     }
+    },
+    {
+     "make": "tex",
+     "name": "b1",
+     "tex": [
+      "B:",
+      "\\tfrac{234}{270}",
+      "=",
+      "87\\%"
+     ],
+     "size": 64,
+     "next_to": "a1",
+     "buff": 0.3,
+     "colors": {
+      "0": "teal",
+      "3": "teal"
+     }
+    }
+   ]
+  },
+  {
+   "text": "A wins. Now patients with large stones, which are harder to treat.",
+   "do": [
+    {
+     "indicate": "a1",
+     "color": "blue"
+    },
+    {
+     "make": "tex",
+     "name": "lg",
+     "tex": [
+      "\\text{large stones}"
+     ],
+     "size": 48,
+     "color": "dim",
+     "next_to": "b1",
+     "buff": 0.5
+    },
+    {
+     "make": "tex",
+     "name": "a2",
+     "tex": [
+      "A:",
+      "\\tfrac{192}{263}",
+      "=",
+      "73\\%"
+     ],
+     "size": 64,
+     "next_to": "lg",
+     "buff": 0.3,
+     "colors": {
+      "0": "blue",
+      "3": "blue"
+     }
+    },
+    {
+     "make": "tex",
+     "name": "b2",
+     "tex": [
+      "B:",
+      "\\tfrac{55}{80}",
+      "=",
+      "69\\%"
+     ],
+     "size": 64,
+     "next_to": "a2",
+     "buff": 0.3,
+     "colors": {
+      "0": "teal",
+      "3": "teal"
+     }
+    }
+   ]
+  },
+  {
+   "text": "A wins again. A is better for small stones and better for large stones. So A is better, right?",
+   "do": [
+    {
+     "indicate": "a2",
+     "color": "blue"
+    },
+    {
+     "sfx": "tick"
+    }
+   ]
+  },
+  {
+   "do": [
+    {
+     "clear": true
+    }
+   ]
+  },
+  {
+   "text": "Now pool everyone together and compute the overall success rates.",
+   "do": [
+    {
+     "make": "tex",
+     "name": "ta",
+     "tex": [
+      "A:",
+      "\\frac{81+192}{87+263}",
+      "=",
+      "\\frac{273}{350}",
+      "=",
+      "78\\%"
+     ],
+     "size": 60,
+     "at": [
+      0,
+      3.6
+     ],
+     "colors": {
+      "0": "blue",
+      "5": "red"
+     }
+    },
+    {
+     "make": "tex",
+     "name": "tb",
+     "tex": [
+      "B:",
+      "\\frac{234+55}{270+80}",
+      "=",
+      "\\frac{289}{350}",
+      "=",
+      "83\\%"
+     ],
+     "size": 60,
+     "next_to": "ta",
+     "buff": 0.5,
+     "colors": {
+      "0": "teal",
+      "5": "green"
+     }
+    }
+   ]
+  },
+  {
+   "text": "B wins overall. A wins in every group, and loses in total. Both are true.",
+   "do": [
+    {
+     "sfx": "thud"
+    },
+    {
+     "circle": "tb"
+    }
+   ]
+  },
+  {
+   "do": [
+    {
+     "clear": true
+    }
+   ]
+  },
+  {
+   "text": "The catch is who got which treatment. A was used mostly on large stones, B mostly on small ones.",
+   "do": [
+    {
+     "make": "tex",
+     "name": "ttl",
+     "tex": [
+      "\\text{number of patients}"
+     ],
+     "size": 52,
+     "color": "dim",
+     "at": [
+      0,
+      5.6
+     ]
+    },
+    {
+     "make": "bars",
+     "name": "br",
+     "values": [
+      87,
+      263,
+      270,
+      80
+     ],
+     "labels": [
+      "A small",
+      "A large",
+      "B small",
+      "B large"
+     ],
+     "colors": [
+      "blue",
+      "blue",
+      "teal",
+      "teal"
+     ],
+     "max": 300,
+     "step": 100,
+     "size": [
+      7.2,
+      4.2
+     ],
+     "at": [
+      0,
+      2.9
+     ]
+    }
+   ]
+  },
+  {
+   "text": "Large stones are harder for both, so A's overall rate is dragged down by its mix of patients.",
+   "do": [
+    {
+     "indicate": "br",
+     "color": "yellow"
+    }
+   ]
+  },
+  {
+   "do": [
+    {
+     "clear": true
+    }
+   ]
+  },
+  {
+   "text": "Overall success is a weighted average. The weights are the share of patients in each group.",
+   "do": [
+    {
+     "sfx": "riser"
+    },
+    {
+     "make": "tex",
+     "name": "wa",
+     "tex": [
+      "A:",
+      "0.25",
+      "(93\\%)",
+      "+",
+      "0.75",
+      "(73\\%)",
+      "\\approx",
+      "78\\%"
+     ],
+     "size": 52,
+     "at": [
+      0,
+      3.6
+     ],
+     "colors": {
+      "1": "yellow",
+      "4": "yellow",
+      "7": "red"
+     }
+    },
+    {
+     "make": "tex",
+     "name": "wb",
+     "tex": [
+      "B:",
+      "0.77",
+      "(87\\%)",
+      "+",
+      "0.23",
+      "(69\\%)",
+      "\\approx",
+      "83\\%"
+     ],
+     "size": 52,
+     "next_to": "wa",
+     "buff": 0.5,
+     "colors": {
+      "1": "yellow",
+      "4": "yellow",
+      "7": "green"
+     }
+    },
+    {
+     "sfx": "ding"
+    },
+    {
+     "make": "box",
+     "name": "bx",
+     "around": "wb",
+     "color": "green"
+    }
+   ]
+  },
+  {
+   "text": "Different weights, same rates. Stone size drives both the choice and the outcome, so compare within each size.",
+   "do": [
+    {
+     "hide": "bx"
+    },
+    {
+     "indicate": [
+      "wa",
+      "wb"
+     ],
+     "color": "yellow"
+    }
+   ]
+  }
+ ],
+ "outro": "Follow for more ideas like this."
+}

@@ -1,0 +1,291 @@
+{
+ "id": "2026-10-26-ph-dilute-acid",
+ "topic": "pH of 10^-8 M HCl is 6.98, not 8 (water autoionization, charge balance)",
+ "subject": "chemistry",
+ "hook_type": "exam pain",
+ "caption": "The shortcut pH = -log10(c) gives 8 for 10^-8 M HCl, which is basic and impossible. Include water's own ions (Kw = 1e-14 at 25 C) and a charge balance, solve x^2 - c x - Kw = 0, and you get [H+] = 1.05e-7 M, pH 6.98. About 90% of the H+ comes from water.\n\nSave this for your next chemistry exam.\n\n#chemistry #physicalchemistry #pH #acidsandbases #stem #science #examprep #math",
+ "cover_at": 1.0,
+ "hook": "Exam question: pH of 10⁻⁸ M HCl. The answer 8 is wrong.",
+ "sub": "Water changes the answer.",
+ "beats": [
+  {
+   "text": "The textbook shortcut: HCl is a strong acid, so $[\\mathrm{H^+}] = 10^{-8}$ M, and pH is eight.",
+   "do": [
+    {
+     "make": "tex",
+     "name": "e1",
+     "tex": [
+      "\\mathrm{pH}",
+      "=",
+      "-\\log_{10}(10^{-8})",
+      "=",
+      "8"
+     ],
+     "size": 62,
+     "at": [
+      0,
+      4.2
+     ],
+     "colors": {
+      "4": "red"
+     }
+    }
+   ]
+  },
+  {
+   "text": "But pH 8 is basic. Adding acid to water can never make it basic. Something's wrong.",
+   "do": [
+    {
+     "make": "numberline",
+     "name": "nl",
+     "range": [
+      0,
+      14,
+      2
+     ],
+     "length": 7.6,
+     "numbers": true,
+     "at": [
+      0,
+      1.4
+     ]
+    },
+    {
+     "make": "dot",
+     "name": "d8",
+     "on": "nl",
+     "at": [
+      8,
+      0
+     ],
+     "color": "red"
+    },
+    {
+     "make": "pointer",
+     "name": "p8",
+     "to": "d8",
+     "text": "basic?",
+     "side": "up",
+     "buff": 1.0,
+     "color": "red"
+    },
+    {
+     "make": "dot",
+     "name": "d7",
+     "on": "nl",
+     "at": [
+      7,
+      0
+     ],
+     "color": "dim"
+    }
+   ]
+  },
+  {
+   "do": [
+    {
+     "clear": true
+    }
+   ]
+  },
+  {
+   "text": "What we forgot: water itself. At 25 °C it always keeps this product fixed, which gives $10^{-7}$ M of each ion.",
+   "do": [
+    {
+     "make": "tex",
+     "name": "kw",
+     "tex": [
+      "[\\mathrm{H^+}]",
+      "[\\mathrm{OH^-}]",
+      "=",
+      "K_w",
+      "=",
+      "10^{-14}"
+     ],
+     "size": 60,
+     "at": [
+      0,
+      4.6
+     ],
+     "colors": {
+      "3": "yellow"
+     }
+    }
+   ]
+  },
+  {
+   "text": "Now count charges. Positive H⁺ must balance negative Cl⁻ (10⁻⁸ M) plus OH⁻.",
+   "do": [
+    {
+     "make": "tex",
+     "name": "cb",
+     "tex": [
+      "[\\mathrm{H^+}]",
+      "=",
+      "c",
+      "+",
+      "\\frac{K_w}{[\\mathrm{H^+}]}"
+     ],
+     "size": 68,
+     "next_to": "kw",
+     "buff": 0.6,
+     "colors": {
+      "2": "blue",
+      "4": "teal"
+     }
+    }
+   ]
+  },
+  {
+   "text": "Call $x = [\\mathrm{H^+}]$ and multiply through by $x$. It's a quadratic.",
+   "do": [
+    {
+     "make": "tex",
+     "name": "q",
+     "tex": [
+      "x^2",
+      "-",
+      "c\\,x",
+      "-",
+      "K_w",
+      "=",
+      "0"
+     ],
+     "size": 68,
+     "next_to": "cb",
+     "buff": 0.6
+    }
+   ]
+  },
+  {
+   "text": "Solve it with $c = 10^{-8}$ and $K_w = 10^{-14}$: $x \\approx 1.05\\times10^{-7}$ M.",
+   "do": [
+    {
+     "sfx": "riser"
+    },
+    {
+     "make": "tex",
+     "name": "sol",
+     "tex": [
+      "x",
+      "=",
+      "\\frac{c+\\sqrt{c^2+4K_w}}{2}"
+     ],
+     "size": 64,
+     "next_to": "q",
+     "buff": 0.6
+    },
+    {
+     "sfx": "ding"
+    },
+    {
+     "make": "box",
+     "name": "bx",
+     "around": "sol"
+    }
+   ]
+  },
+  {
+   "do": [
+    {
+     "clear": true
+    }
+   ]
+  },
+  {
+   "text": "Where does that H⁺ come from? Almost all of it is the water. Units of $10^{-8}$ M:",
+   "do": [
+    {
+     "make": "tex",
+     "name": "tt",
+     "tex": [
+      "[\\mathrm{H^+}]\\ \\text{in units of } 10^{-8}\\,\\mathrm{M}"
+     ],
+     "size": 44,
+     "color": "dim",
+     "at": [
+      0,
+      5.7
+     ]
+    },
+    {
+     "make": "bars",
+     "name": "br",
+     "values": [
+      1.0,
+      9.5,
+      10.5
+     ],
+     "labels": [
+      "acid",
+      "water",
+      "total"
+     ],
+     "colors": [
+      "blue",
+      "teal",
+      "yellow"
+     ],
+     "max": 12,
+     "step": 4,
+     "size": [
+      7.0,
+      4.2
+     ],
+     "at": [
+      0,
+      3.0
+     ]
+    }
+   ]
+  },
+  {
+   "text": "Water supplies about 90% of it. The pH comes out near 6.98: slightly acidic, as it must be.",
+   "do": [
+    {
+     "make": "tex",
+     "name": "ph",
+     "tex": [
+      "\\mathrm{pH}",
+      "\\approx",
+      "6.98"
+     ],
+     "size": 96,
+     "at": [
+      0,
+      -0.9
+     ],
+     "colors": {
+      "2": "green"
+     }
+    },
+    {
+     "sfx": "ding"
+    },
+    {
+     "make": "box",
+     "name": "bx2",
+     "around": "ph",
+     "color": "green"
+    }
+   ]
+  },
+  {
+   "text": "Ignoring water is fine for ordinary acids. It starts to fail as the concentration approaches $10^{-6}$ M and below.",
+   "do": [
+    {
+     "hide": "bx2"
+    },
+    {
+     "indicate": "ph",
+     "color": "yellow"
+    }
+   ]
+  }
+ ],
+ "outro": "Follow for more ideas like this.",
+ "post_after": "2026-10-27T02:00:00+05:30",
+ "est_duration": 69,
+ "visual": "data",
+ "approved": false
+}
