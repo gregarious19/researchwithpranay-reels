@@ -42,6 +42,15 @@
    "followers_count": 19,
    "media_count": 8,
    "id": "29246272851727360"
+  },
+  {
+   "fetched": "2026-10-27T06:24+00:00",
+   "token_user_id": "17841422826404681",
+   "username": "researchwithpranay",
+   "ig_user_id_secret_matches": true,
+   "followers_count": 21,
+   "media_count": 13,
+   "id": "29246272851727360"
   }
  ],
  "2026-10-25-e-to-the-x": {
@@ -88,19 +97,31 @@
     "total_interactions": 61,
     "ig_reels_avg_watch_time": 12309,
     "ig_reels_video_view_total_time": 19054925
+   },
+   {
+    "fetched": "2026-10-27T06:24+00:00",
+    "views": 1777,
+    "reach": 1503,
+    "likes": 34,
+    "comments": 10,
+    "shares": 9,
+    "saved": 8,
+    "total_interactions": 62,
+    "ig_reels_avg_watch_time": 12399,
+    "ig_reels_video_view_total_time": 19343022
    }
   ],
   "latest": {
-   "fetched": "2026-10-26T06:24+00:00",
-   "views": 1760,
-   "reach": 1495,
+   "fetched": "2026-10-27T06:24+00:00",
+   "views": 1777,
+   "reach": 1503,
    "likes": 34,
-   "comments": 9,
+   "comments": 10,
    "shares": 9,
    "saved": 8,
-   "total_interactions": 61,
-   "ig_reels_avg_watch_time": 12309,
-   "ig_reels_video_view_total_time": 19054925
+   "total_interactions": 62,
+   "ig_reels_avg_watch_time": 12399,
+   "ig_reels_video_view_total_time": 19343022
   }
  },
  "2026-10-25-rotation-eigenvalues": {
@@ -147,19 +168,31 @@
     "total_interactions": 112,
     "ig_reels_avg_watch_time": 15912,
     "ig_reels_video_view_total_time": 42582381
+   },
+   {
+    "fetched": "2026-10-27T06:24+00:00",
+    "views": 3190,
+    "reach": 2798,
+    "likes": 72,
+    "comments": 1,
+    "shares": 16,
+    "saved": 23,
+    "total_interactions": 114,
+    "ig_reels_avg_watch_time": 15931,
+    "ig_reels_video_view_total_time": 44337375
    }
   ],
   "latest": {
-   "fetched": "2026-10-26T06:24+00:00",
-   "views": 3077,
-   "reach": 2686,
-   "likes": 71,
+   "fetched": "2026-10-27T06:24+00:00",
+   "views": 3190,
+   "reach": 2798,
+   "likes": 72,
    "comments": 1,
    "shares": 16,
-   "saved": 22,
-   "total_interactions": 112,
-   "ig_reels_avg_watch_time": 15912,
-   "ig_reels_video_view_total_time": 42582381
+   "saved": 23,
+   "total_interactions": 114,
+   "ig_reels_avg_watch_time": 15931,
+   "ig_reels_video_view_total_time": 44337375
   }
  },
  "2026-10-25-birthday-paradox": {
@@ -194,19 +227,31 @@
     "total_interactions": 21,
     "ig_reels_avg_watch_time": 12572,
     "ig_reels_video_view_total_time": 14043662
+   },
+   {
+    "fetched": "2026-10-27T06:24+00:00",
+    "views": 1314,
+    "reach": 1148,
+    "likes": 16,
+    "comments": 0,
+    "shares": 2,
+    "saved": 4,
+    "total_interactions": 22,
+    "ig_reels_avg_watch_time": 12503,
+    "ig_reels_video_view_total_time": 14316025
    }
   ],
   "latest": {
-   "fetched": "2026-10-26T06:24+00:00",
-   "views": 1281,
-   "reach": 1119,
-   "likes": 15,
+   "fetched": "2026-10-27T06:24+00:00",
+   "views": 1314,
+   "reach": 1148,
+   "likes": 16,
    "comments": 0,
    "shares": 2,
    "saved": 4,
-   "total_interactions": 21,
-   "ig_reels_avg_watch_time": 12572,
-   "ig_reels_video_view_total_time": 14043662
+   "total_interactions": 22,
+   "ig_reels_avg_watch_time": 12503,
+   "ig_reels_video_view_total_time": 14316025
   }
  },
  "2026-10-25-i-to-the-i": {
@@ -241,19 +286,31 @@
     "total_interactions": 39,
     "ig_reels_avg_watch_time": 13851,
     "ig_reels_video_view_total_time": 17258541
+   },
+   {
+    "fetched": "2026-10-27T06:24+00:00",
+    "views": 1409,
+    "reach": 1245,
+    "likes": 34,
+    "comments": 0,
+    "shares": 1,
+    "saved": 3,
+    "total_interactions": 39,
+    "ig_reels_avg_watch_time": 13823,
+    "ig_reels_video_view_total_time": 17292805
    }
   ],
   "latest": {
-   "fetched": "2026-10-26T06:24+00:00",
-   "views": 1404,
-   "reach": 1234,
+   "fetched": "2026-10-27T06:24+00:00",
+   "views": 1409,
+   "reach": 1245,
    "likes": 34,
    "comments": 0,
    "shares": 1,
    "saved": 3,
    "total_interactions": 39,
-   "ig_reels_avg_watch_time": 13851,
-   "ig_reels_video_view_total_time": 17258541
+   "ig_reels_avg_watch_time": 13823,
+   "ig_reels_video_view_total_time": 17292805
   }
  },
  "2026-10-25-learning-rate-diverge": {
@@ -288,19 +345,31 @@
     "total_interactions": 12,
     "ig_reels_avg_watch_time": 8760,
     "ig_reels_video_view_total_time": 9592957
+   },
+   {
+    "fetched": "2026-10-27T06:24+00:00",
+    "views": 1214,
+    "reach": 1090,
+    "likes": 8,
+    "comments": 0,
+    "shares": 0,
+    "saved": 4,
+    "total_interactions": 13,
+    "ig_reels_avg_watch_time": 8740,
+    "ig_reels_video_view_total_time": 9675508
    }
   ],
   "latest": {
-   "fetched": "2026-10-26T06:24+00:00",
-   "views": 1200,
-   "reach": 1079,
+   "fetched": "2026-10-27T06:24+00:00",
+   "views": 1214,
+   "reach": 1090,
    "likes": 8,
    "comments": 0,
    "shares": 0,
-   "saved": 3,
-   "total_interactions": 12,
-   "ig_reels_avg_watch_time": 8760,
-   "ig_reels_video_view_total_time": 9592957
+   "saved": 4,
+   "total_interactions": 13,
+   "ig_reels_avg_watch_time": 8740,
+   "ig_reels_video_view_total_time": 9675508
   }
  },
  "2026-10-25-triangles-rigid": {
@@ -335,19 +404,31 @@
     "total_interactions": 15,
     "ig_reels_avg_watch_time": 12367,
     "ig_reels_video_view_total_time": 6691046
+   },
+   {
+    "fetched": "2026-10-27T06:24+00:00",
+    "views": 1237,
+    "reach": 1081,
+    "likes": 24,
+    "comments": 0,
+    "shares": 0,
+    "saved": 2,
+    "total_interactions": 28,
+    "ig_reels_avg_watch_time": 15636,
+    "ig_reels_video_view_total_time": 17106774
    }
   ],
   "latest": {
-   "fetched": "2026-10-26T06:24+00:00",
-   "views": 644,
-   "reach": 526,
-   "likes": 13,
+   "fetched": "2026-10-27T06:24+00:00",
+   "views": 1237,
+   "reach": 1081,
+   "likes": 24,
    "comments": 0,
    "shares": 0,
-   "saved": 0,
-   "total_interactions": 15,
-   "ig_reels_avg_watch_time": 12367,
-   "ig_reels_video_view_total_time": 6691046
+   "saved": 2,
+   "total_interactions": 28,
+   "ig_reels_avg_watch_time": 15636,
+   "ig_reels_video_view_total_time": 17106774
   }
  },
  "2026-10-25-why-sky-blue": {
@@ -382,19 +463,206 @@
     "total_interactions": 7,
     "ig_reels_avg_watch_time": 7067,
     "ig_reels_video_view_total_time": 954073
+   },
+   {
+    "fetched": "2026-10-27T06:24+00:00",
+    "views": 153,
+    "reach": 133,
+    "likes": 6,
+    "comments": 0,
+    "shares": 0,
+    "saved": 0,
+    "total_interactions": 8,
+    "ig_reels_avg_watch_time": 7372,
+    "ig_reels_video_view_total_time": 1032148
    }
   ],
   "latest": {
-   "fetched": "2026-10-26T06:24+00:00",
-   "views": 150,
-   "reach": 129,
+   "fetched": "2026-10-27T06:24+00:00",
+   "views": 153,
+   "reach": 133,
    "likes": 6,
    "comments": 0,
    "shares": 0,
    "saved": 0,
-   "total_interactions": 7,
-   "ig_reels_avg_watch_time": 7067,
-   "ig_reels_video_view_total_time": 954073
+   "total_interactions": 8,
+   "ig_reels_avg_watch_time": 7372,
+   "ig_reels_video_view_total_time": 1032148
+  }
+ },
+ "2026-10-25-half-life-halvings": {
+  "topic": "half-life: why 10 half-lives leave about 0.1% of a sample",
+  "hook_type": "exam pain",
+  "hook": "How long until 99.9% of a radioactive sample is gone?",
+  "subject": "chemistry",
+  "duration": null,
+  "posted": "2026-10-26T07:41:24+0000",
+  "permalink": "https://www.instagram.com/reel/De8xNrdDLwG/",
+  "snapshots": [
+   {
+    "fetched": "2026-10-27T06:24+00:00",
+    "views": 1256,
+    "reach": 1095,
+    "likes": 11,
+    "comments": 0,
+    "shares": 1,
+    "saved": 4,
+    "total_interactions": 18,
+    "ig_reels_avg_watch_time": 11184,
+    "ig_reels_video_view_total_time": 12660626
+   }
+  ],
+  "latest": {
+   "fetched": "2026-10-27T06:24+00:00",
+   "views": 1256,
+   "reach": 1095,
+   "likes": 11,
+   "comments": 0,
+   "shares": 1,
+   "saved": 4,
+   "total_interactions": 18,
+   "ig_reels_avg_watch_time": 11184,
+   "ig_reels_video_view_total_time": 12660626
+  }
+ },
+ "2026-10-25-harmonic-diverges": {
+  "topic": "why the harmonic series 1 + 1/2 + 1/3 + ... diverges (area under 1/x)",
+  "hook_type": "curiosity jump",
+  "hook": "Add smaller and smaller pieces forever. Can the total still be infinite?",
+  "subject": "math",
+  "duration": null,
+  "posted": "2026-10-26T11:30:26+0000",
+  "permalink": "https://www.instagram.com/reel/De9LYLekWHf/",
+  "snapshots": [
+   {
+    "fetched": "2026-10-27T06:24+00:00",
+    "views": 1652,
+    "reach": 1400,
+    "likes": 25,
+    "comments": 0,
+    "shares": 1,
+    "saved": 4,
+    "total_interactions": 31,
+    "ig_reels_avg_watch_time": 19206,
+    "ig_reels_video_view_total_time": 26600428
+   }
+  ],
+  "latest": {
+   "fetched": "2026-10-27T06:24+00:00",
+   "views": 1652,
+   "reach": 1400,
+   "likes": 25,
+   "comments": 0,
+   "shares": 1,
+   "saved": 4,
+   "total_interactions": 31,
+   "ig_reels_avg_watch_time": 19206,
+   "ig_reels_video_view_total_time": 26600428
+  }
+ },
+ "2026-10-26-binary-search-thirty": {
+  "topic": "binary search: a billion numbers need only 30 guesses (log2)",
+  "hook_type": "wrong-answer reveal",
+  "hook": "Guess a number from 1 to a billion. How many tries?",
+  "subject": "computing",
+  "duration": null,
+  "posted": "2026-10-26T07:43:10+0000",
+  "permalink": "https://www.instagram.com/reel/De8xYP-ErR2/",
+  "snapshots": [
+   {
+    "fetched": "2026-10-27T06:24+00:00",
+    "views": 291,
+    "reach": 260,
+    "likes": 2,
+    "comments": 0,
+    "shares": 0,
+    "saved": 0,
+    "total_interactions": 2,
+    "ig_reels_avg_watch_time": 9827,
+    "ig_reels_video_view_total_time": 2594386
+   }
+  ],
+  "latest": {
+   "fetched": "2026-10-27T06:24+00:00",
+   "views": 291,
+   "reach": 260,
+   "likes": 2,
+   "comments": 0,
+   "shares": 0,
+   "saved": 0,
+   "total_interactions": 2,
+   "ig_reels_avg_watch_time": 9827,
+   "ig_reels_video_view_total_time": 2594386
+  }
+ },
+ "2026-10-26-ph-dilute-acid": {
+  "topic": "pH of 10^-8 M HCl is 6.98, not 8 (water autoionization, charge balance)",
+  "hook_type": "exam pain",
+  "hook": "Exam question: pH of 10⁻⁸ M HCl. The answer 8 is wrong.",
+  "subject": "chemistry",
+  "duration": null,
+  "posted": "2026-10-26T21:49:24+0000",
+  "permalink": "https://www.instagram.com/reel/De-SOXXAFbm/",
+  "snapshots": [
+   {
+    "fetched": "2026-10-27T06:24+00:00",
+    "views": 1820,
+    "reach": 1514,
+    "likes": 35,
+    "comments": 0,
+    "shares": 6,
+    "saved": 24,
+    "total_interactions": 65,
+    "ig_reels_avg_watch_time": 17969,
+    "ig_reels_video_view_total_time": 27368289
+   }
+  ],
+  "latest": {
+   "fetched": "2026-10-27T06:24+00:00",
+   "views": 1820,
+   "reach": 1514,
+   "likes": 35,
+   "comments": 0,
+   "shares": 6,
+   "saved": 24,
+   "total_interactions": 65,
+   "ig_reels_avg_watch_time": 17969,
+   "ig_reels_video_view_total_time": 27368289
+  }
+ },
+ "2026-10-26-simpsons-paradox": {
+  "topic": "Simpson's paradox: kidney stone treatments (weighted averages)",
+  "hook_type": "visual surprise",
+  "hook": "A treatment can win in every group and still lose overall.",
+  "subject": "statistics",
+  "duration": null,
+  "posted": "2026-10-26T16:18:07+0000",
+  "permalink": "https://www.instagram.com/reel/De9sTKfAHaP/",
+  "snapshots": [
+   {
+    "fetched": "2026-10-27T06:24+00:00",
+    "views": 205,
+    "reach": 178,
+    "likes": 4,
+    "comments": 0,
+    "shares": 0,
+    "saved": 0,
+    "total_interactions": 5,
+    "ig_reels_avg_watch_time": 8766,
+    "ig_reels_video_view_total_time": 1586694
+   }
+  ],
+  "latest": {
+   "fetched": "2026-10-27T06:24+00:00",
+   "views": 205,
+   "reach": 178,
+   "likes": 4,
+   "comments": 0,
+   "shares": 0,
+   "saved": 0,
+   "total_interactions": 5,
+   "ig_reels_avg_watch_time": 8766,
+   "ig_reels_video_view_total_time": 1586694
   }
  }
 }
